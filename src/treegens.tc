@@ -39,9 +39,19 @@ namespace treegens {
             log_positions = [
                 vec(0, 0, 0)
             ];
-            height = num.random(4, 6);
+            height = num.random(5, 7);
             branchReqs = 2;
         }  
+        if(size == small) {
+            log_positions = [
+                vec(0, 0, 0),
+                vec(0, 0, 1),
+                vec(1, 0, 0),
+                vec(1, 0, 1)
+            ];
+            height = num.random(7, 11);
+            branchReqs = 3;
+        }
         if(size == big) {
             log_positions = [
                 vec(0, 0, 0),
@@ -54,19 +64,9 @@ namespace treegens {
                 vec(-1, 0, 0),
                 vec(-1, 0, -1)
             ];
-            height = num.random(8, 14);
+            height = num.random(11, 14);
             branchReqs = 4;
         }   
-        if(size == small) {
-            log_positions = [
-                vec(0, 0, 0),
-                vec(0, 0, 1),
-                vec(1, 0, 0),
-                vec(1, 0, 1)
-            ];
-            height = num.random(5, 8);
-            branchReqs = 3;
-        }
 
         for(line i of range(0, height)) {
             for(line offset of log_positions) {

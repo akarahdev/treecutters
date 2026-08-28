@@ -40,8 +40,8 @@ playerevent join {
     );
     game.setRegion(
         "air" as item,
-        global "%uuid roomPos".shiftAllAxes(-15, 0, -15),
-        global "%uuid roomPos".shiftAllAxes(15, 15, 15)
+        global "%uuid roomPos".shiftAllAxes(-25, 0, -25),
+        global "%uuid roomPos".shiftAllAxes(25, 30, 25)
     );
     start treegens.growForPlayer();
 

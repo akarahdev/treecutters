@@ -1,11 +1,47 @@
 playerevent join {
-    player.setToCreativeMode();
+    player.setToSurvivalMode();
+
+    line tool = item("music_disc_cat");
+    tool = tool.setModel("minecraft:iron_axe");
+    tool = tool.addToolMiningRule(
+        500,
+        item("stripped_oak_wood")
+    );
+
     player.giveItems(item("birch_sapling"));
     player.giveItems(item("oak_sapling"));
     player.giveItems(item("spruce_sapling"));
+    player.giveItems(tool);
+    player.enableBlockModification(
+        item("stripped_oak_wood")
+    );
+    player.givePotionEffect(
+        pot("Jump Boost", 4, 10000000),
+        particles = "None",
+        showIcon = "False"
+    );
+    player.givePotionEffect(
+        pot("Speed", 7, 10000000),
+        particles = "None",
+        showIcon = "False"
+    );
 }
 
 import treegens;
+import sweeping;
+
+playerevent breakBlock {
+    line blocks = sweeping.getBlockOrders(
+        event.blockLocation,
+        5,
+        game.getBlockMaterial(event.blockLocation)
+    );
+    line flatBlocks = blocks.flatten();
+    for(line block of flatBlocks) {
+        game.breakBlock(block);
+        wait(2);
+    }
+}
 
 playerevent placeBlock {
     event.uncancel();

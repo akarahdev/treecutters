@@ -1,0 +1,53 @@
+namespace sweeping {
+    function getBlocksBroken(
+        sweep: num,
+        toughness: num
+    ): num {
+        if(toughness <= 0) {
+            return sweep;
+        }
+        return 4 * num.log(
+            1 + ((sweep + num.root(sweep) - toughness) / toughness.exponent(0.511)).exponent(1.9),
+            10
+        );
+    }
+
+    function getBlockOrders(
+        origin: loc,
+        maxBlocks: num,
+        ty: str
+    ): list[list[loc]] {
+        line breakQueue: list[list[loc]] = [];
+        line currentBlockList: list[loc] = [origin];
+        line breaksNextTick: list[loc] = [];
+        line brokenBlocks = [];
+        line blocksMined = 0;
+
+        while(blocksMined < maxBlocks) {
+            if(currentBlockList.sizeEquals(0)) {
+                if(breaksNextTick.sizeEquals(0)) {
+                    break;
+                }
+
+                breakQueue.append(breaksNextTick);
+                currentBlockList = breaksNextTick;
+                breaksNextTick = [];
+            }
+
+            line el = currentBlockList.pop(num.random(1, currentBlockList.len()));
+            for(line adj of adjacent(el)) {
+                if(!brokenBlocks.contains(adj) && game.blockEquals(adj, ty)) {
+                    breaksNextTick.append(adj);
+                    brokenBlocks.append(adj);
+                }   
+            }
+            blocksMined++;
+        }
+
+        return breakQueue;
+    }
+
+    function executeSweep() {
+
+    }
+}

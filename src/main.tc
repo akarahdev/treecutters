@@ -1,0 +1,3 @@
+playerevent join {
+    print("Hello world!");
+}

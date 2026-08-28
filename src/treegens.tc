@@ -52,7 +52,7 @@ namespace treegens {
         }
 
         root.y -= 1;
-        line terminalLength = num.floor(height / 2);
+        line terminalLength = num.floor(height * 0.6);
         line iterations = 0;
         line branches = 0;
         repeat {

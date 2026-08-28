@@ -64,3 +64,9 @@ playerevent placeBlock {
         );
     }
 }
+
+import throwingaxe;
+
+playerevent rightClick {
+    start throwingaxe.throw(player.eyeLocation);
+}

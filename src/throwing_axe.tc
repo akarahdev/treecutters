@@ -1,0 +1,81 @@
+import sweeping;
+
+namespace throwingaxe {
+    process throw(
+        origin: loc
+    ) {
+        game.spawnItemDisplay(origin, item("iron_axe"));
+        line disp = lastEntity.uuid;
+
+        line playerLoc = player.location;
+        playerLoc.pitch = 0;
+        playerLoc.yaw = 0;
+
+        line dir = playerLoc.getDirection();
+
+        line pos = origin;
+
+        line dy = 0.0;
+
+        line f0 = vec(0, 0, 1);
+        f0 = f0.rotateAroundAxis(-90, axis = "Y", unit = "Degrees");
+        line s0 = vec(1, 0, 0);
+        s0 = s0.rotateAroundAxis(-90, axis = "Y", unit = "Degrees");
+        line spinAngle = 0;
+
+        select entitiesByUUID(disp);
+        entity.setDisplayRotationFromEulerAngles(0, 90, 0);
+        select reset;
+        while(game.blockEquals(pos, "air")) {
+            pos = pos.shiftInDirection(1, direction = "Forward");
+            pos.y -= dy;
+            dy += 0.01;
+
+            line crossFD = f0.cross(dir);
+            line rotAxis = crossFD.setLength(1);
+            line rotAngle = num.atan2(crossFD.len(), f0.dot(dir));
+            spinAngle += 28;
+
+            select entitiesByUUID(disp);
+            entity.setDisplayTeleportDuration(1);
+            entity.setDisplayInterpolation(1);
+            entity.teleport(pos);
+            entity.setDisplayRotationFromAxisAngle(
+                rotAxis,
+                rotAngle,
+                rotationType = "Left Rotation"
+            );
+            entity.setDisplayRotationFromAxisAngle(
+                s0,
+                spinAngle,
+                rotationType = "Right Rotation"
+            );
+            select reset;
+
+            wait(1);
+        }
+
+        select entitiesByUUID(disp);
+        entity.remove();
+        select reset;
+
+        pos = pos.align();
+
+        for(line adj of adjacent(pos, pattern = "Cube (26 blocks)", includeOrigin = "True")) {
+            adj = adj.align();
+            if(game.getBlockMaterial(adj) == "air") {
+                continue;
+            }
+            line blocks = sweeping.getBlockOrders(adj, 5, game.getBlockMaterial(adj));
+            line flat = blocks.flatten();
+            game.breakBlock(adj);
+            for(line block of flat) {
+                game.breakBlock(block);
+                wait(2);
+            }
+            if(!flat.sizeEquals(0)) {
+                break;
+            }
+        }
+    }
+}

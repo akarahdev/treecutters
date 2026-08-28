@@ -8,7 +8,7 @@ playerevent join {
     tool = tool.setModel("minecraft:iron_axe");
     tool = tool.addToolMiningRule(
         500,
-        item("stripped_oak_wood")
+        global woodTypeList
     );
     tool = tool.setTag("axe", 1);
 
@@ -17,18 +17,18 @@ playerevent join {
     player.giveItems(item("spruce_sapling"), 64);
     player.giveItems(tool);
     player.enableBlockModification(
-        item("stripped_oak_wood")
+        global woodTypeList
     );
-    player.givePotionEffect(
-        pot("Jump Boost", 4, 10000000),
-        particles = "None",
-        showIcon = "False"
-    );
-    player.givePotionEffect(
-        pot("Speed", 7, 10000000),
-        particles = "None",
-        showIcon = "False"
-    );
+    // player.givePotionEffect(
+    //     pot("Jump Boost", 4, 10000000),
+    //     particles = "None",
+    //     showIcon = "False"
+    // );
+    // player.givePotionEffect(
+    //     pot("Speed", 7, 10000000),
+    //     particles = "None",
+    //     showIcon = "False"
+    // );
 
     declare global "%uuid roomPos": loc = roomPositions.pop();
     if(global "%uuid roomPos" == 0) {
@@ -38,6 +38,11 @@ playerevent join {
     player.teleport(
         (global "%uuid roomPos").shiftAllAxes(-6, 0, -6)
     );
+    game.setRegion(
+        "air" as item,
+        global "%uuid roomPos".shiftAllAxes(-15, 0, -15),
+        global "%uuid roomPos".shiftAllAxes(15, 15, 15)
+    );
     start treegens.growForPlayer();
 
 }
@@ -45,6 +50,10 @@ playerevent join {
 import loops;
 
 gameevent startup {
+    declare global woodTypeList: list[item] = [
+        item("stripped_oak_wood")
+    ];
+
     declare global roomPositions: list[loc] = [
         loc(25, 50, 25),
         loc(25, 50, 75),
@@ -58,10 +67,13 @@ import treegens;
 import sweeping;
 
 playerevent breakBlock {
+    if(!event.blockEquals(global woodTypeList)) {
+        event.cancel();
+        endthread;
+    }
     line blocks = sweeping.getBlockOrders(
         event.blockLocation,
-        6,
-        game.getBlockMaterial(event.blockLocation)
+        0
     );
     sweeping.safeBreak(event.blockLocation);
     sweeping.executeSweep(saved "%uuid logs", blocks);

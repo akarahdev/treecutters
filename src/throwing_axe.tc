@@ -61,12 +61,19 @@ namespace throwingaxe {
 
         pos = pos.align();
 
+        execBreak(pos);
+    }
+
+    function execBreak(
+        pos: loc
+    ) {
         for(line adj of adjacent(pos, pattern = "Cube (26 blocks)", includeOrigin = "True")) {
             adj = adj.align();
-            if(game.getBlockMaterial(adj) == "air") {
+            line mat = game.getBlockMaterial(adj);
+            if(!(str.setToString(global woodTypeList).contains(mat))) {
                 continue;
             }
-            line blocks = sweeping.getBlockOrders(adj, 0, game.getBlockMaterial(adj));
+            line blocks = sweeping.getBlockOrders(adj, 0);
             sweeping.safeBreak(adj);
             sweeping.executeSweep(saved "%uuid logs", blocks);
             break;

@@ -9,7 +9,7 @@ namespace treegens {
         if(global "%uuid treeRegenerating" == 1) {
             endthread;
         } 
-        
+
         declare global "%uuid treeRegenerating" = 1;
         player.launchUp(2);
         wait(1);
@@ -118,7 +118,6 @@ namespace treegens {
         }
 
         outputPositions.removeDuplicates();
-        print(outputPositions);
         return outputPositions;
     }
 }

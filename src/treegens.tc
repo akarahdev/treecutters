@@ -6,10 +6,11 @@ namespace treegens {
     function buildOakTree(
         root: loc,
         size: str
-    ) {
+    ): list[loc] {
         line log_positions: list[vec];
         line height: num;
         line branchReqs: num;
+        line outputPositions: list[loc] = [];
         if(size == tiny) {
             log_positions = [
                 vec(0, 0, 0)
@@ -47,7 +48,9 @@ namespace treegens {
             for(line offset of log_positions) {
                 line added = root.shiftOnVector(offset);
                 game.setBlock(item("stripped_oak_wood"), added);
+                outputPositions.append(added);
             }
+            wait(1);
             root.y += 1;
         }
 
@@ -76,10 +79,21 @@ namespace treegens {
             line targetLoc = rootCopy.shiftInDirection(terminalLength, direction = "Forward");   
 
             for(line pathPos of path(root, targetLoc, 0.25)) {
+                line placed = 0;
+                if(game.getBlockMaterial(pathPos) == "air") {
+                    placed = 1;
+                }
                 game.setBlock(item("stripped_oak_wood"), pathPos);
+                outputPositions.append(pathPos);
+                if(placed == 1) {
+                    wait(1);
+                }
             }
             branches++;
 
         }
+
+        outputPositions.removeDuplicates();
+        return outputPositions;
     }
 }

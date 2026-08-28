@@ -7,6 +7,7 @@ playerevent join {
         500,
         item("stripped_oak_wood")
     );
+    tool = tool.setTag("axe", 1);
 
     player.giveItems(item("birch_sapling"));
     player.giveItems(item("oak_sapling"));
@@ -68,5 +69,7 @@ playerevent placeBlock {
 import throwingaxe;
 
 playerevent rightClick {
-    start throwingaxe.throw(player.eyeLocation);
+    if(player.mainHandItem.getTag("axe") != 0) {
+        start throwingaxe.throw(player.eyeLocation);
+    }
 }

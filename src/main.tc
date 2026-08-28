@@ -1,3 +1,6 @@
+declare saved "%uuid logs": num;
+declare global "%uuid brokenLogs": list[loc];
+
 playerevent join {
     player.setToSurvivalMode();
 
@@ -11,7 +14,7 @@ playerevent join {
 
     player.giveItems(item("birch_sapling"));
     player.giveItems(item("oak_sapling"));
-    player.giveItems(item("spruce_sapling"));
+    player.giveItems(item("spruce_sapling"), 64);
     player.giveItems(tool);
     player.enableBlockModification(
         item("stripped_oak_wood")
@@ -28,20 +31,23 @@ playerevent join {
     );
 }
 
+import loops;
+
+gameevent startup {
+    start loops.executePlayerLoops();
+}
+
 import treegens;
 import sweeping;
 
 playerevent breakBlock {
     line blocks = sweeping.getBlockOrders(
         event.blockLocation,
-        5,
+        500,
         game.getBlockMaterial(event.blockLocation)
     );
-    line flatBlocks = blocks.flatten();
-    for(line block of flatBlocks) {
-        game.breakBlock(block);
-        wait(2);
-    }
+    sweeping.safeBreak(event.blockLocation);
+    sweeping.executeSweep(saved "%uuid logs", blocks);
 }
 
 playerevent placeBlock {

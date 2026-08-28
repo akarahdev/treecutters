@@ -53,7 +53,26 @@ namespace sweeping {
         return breakQueue;
     }
 
-    function executeSweep() {
+    function executeSweep(
+        incrementOnBlock: var[num],
+        blocks: list[list[loc]]
+    ): num {
 
+        line flat = blocks.flatten();
+        flat.removeDuplicates();
+        for(line block of flat) {
+            safeBreak(block);
+            wait(2);
+        }
+    }
+
+    function safeBreak(
+        block: loc
+    ) {
+        if(game.getBlockMaterial(block) != "air" && !global "%uuid brokenLogs".contains(block)) {
+            global "%uuid brokenLogs".append(block);
+            saved "%uuid logs" += 1;
+        }
+        game.breakBlock(block);
     }
 }

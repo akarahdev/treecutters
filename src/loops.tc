@@ -1,0 +1,14 @@
+namespace loops {
+    process executePlayerLoops() {
+        repeat {
+            select allPlayers;
+            start playerLoop(targetMode = "For each in selection");
+            select reset;
+            wait(1);
+        }
+    }
+    
+    process playerLoop() {
+        player.sendActionBar(s"<dark_green>╟ <green>%var(%uuid logs) Logs");
+    }
+}

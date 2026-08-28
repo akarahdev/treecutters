@@ -67,13 +67,9 @@ namespace throwingaxe {
                 continue;
             }
             line blocks = sweeping.getBlockOrders(adj, 5, game.getBlockMaterial(adj));
-            line flat = blocks.flatten();
-            game.breakBlock(adj);
-            for(line block of flat) {
-                game.breakBlock(block);
-                wait(2);
-            }
-            if(!flat.sizeEquals(0)) {
+            sweeping.safeBreak(adj);
+            sweeping.executeSweep(saved "%uuid logs", blocks);
+            if(!blocks.flatten().sizeEquals(0)) {
                 break;
             }
         }

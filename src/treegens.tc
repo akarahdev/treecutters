@@ -1,0 +1,85 @@
+namespace treegens {
+    big = "big";
+    small = "small";
+    tiny = "tiny";
+
+    function buildOakTree(
+        root: loc,
+        size: str
+    ) {
+        line log_positions: list[vec];
+        line height: num;
+        line branchReqs: num;
+        if(size == tiny) {
+            log_positions = [
+                vec(0, 0, 0)
+            ];
+            height = num.random(4, 6);
+            branchReqs = 2;
+        }  
+        if(size == big) {
+            log_positions = [
+                vec(0, 0, 0),
+                vec(0, 0, 1),
+                vec(1, 0, 0),
+                vec(1, 0, 1),
+                vec(1, 0, -1),
+                vec(-1, 0, 1),
+                vec(0, 0, -1),
+                vec(-1, 0, 0),
+                vec(-1, 0, -1)
+            ];
+            height = num.random(8, 14);
+            branchReqs = 4;
+        }   
+        if(size == small) {
+            log_positions = [
+                vec(0, 0, 0),
+                vec(0, 0, 1),
+                vec(1, 0, 0),
+                vec(1, 0, 1)
+            ];
+            height = num.random(5, 8);
+            branchReqs = 3;
+        }
+
+        for(line i of range(0, height)) {
+            for(line offset of log_positions) {
+                line added = root.shiftOnVector(offset);
+                game.setBlock(item("stripped_oak_wood"), added);
+            }
+            root.y += 1;
+        }
+
+        root.y -= 1;
+        line terminalLength = num.floor(height / 2);
+        line iterations = 0;
+        line branches = 0;
+        repeat {
+            wait(1);
+            iterations++;
+            if(iterations > 50) {
+                break;
+            }
+            if(branches >= branchReqs) {
+                break;
+            }
+            line yaw = num.random(0, 360);
+            line pitch = num.random(-30, 30);
+            line rootCopy = root.shiftAllDirections(0, 0, 0);
+            rootCopy.pitch += pitch;
+            rootCopy.yaw += yaw;
+            line checkLoc = rootCopy.shiftInDirection(2, direction = "Forward");
+            if(game.getBlockMaterial(checkLoc) != "air") {
+                continue;
+            }
+            line targetLoc = rootCopy.shiftInDirection(terminalLength, direction = "Forward");   
+
+            for(line pathPos of path(root, targetLoc, 0.25)) {
+                game.setBlock(item("stripped_oak_wood"), pathPos);
+            }
+            branches++;
+
+        }
+    }
+}

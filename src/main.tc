@@ -1,3 +1,30 @@
 playerevent join {
-    print("Hello world!");
+    player.setToCreativeMode();
+    player.giveItems(item("birch_sapling"));
+    player.giveItems(item("oak_sapling"));
+    player.giveItems(item("spruce_sapling"));
+}
+
+import treegens;
+
+playerevent placeBlock {
+    event.uncancel();
+    if(event.blockEquals(item("birch_sapling"))) {
+        treegens.buildOakTree(
+            event.blockLocation,
+            treegens.tiny
+        );
+    }
+    if(event.blockEquals(item("oak_sapling"))) {
+        treegens.buildOakTree(
+            event.blockLocation,
+            treegens.small
+        );
+    }
+    if(event.blockEquals(item("spruce_sapling"))) {
+        treegens.buildOakTree(
+            event.blockLocation,
+            treegens.big
+        );
+    }
 }

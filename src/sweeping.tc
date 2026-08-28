@@ -1,3 +1,5 @@
+import treegens;
+
 namespace sweeping {
     function getBlocksBroken(
         sweep: num,
@@ -69,10 +71,29 @@ namespace sweeping {
     function safeBreak(
         block: loc
     ) {
+        if(global "%uuid treeRegenerating" == 1) {
+            event.cancel();
+            return;
+        }
         if(game.getBlockMaterial(block) != "air" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
             saved "%uuid logs" += 1;
         }
         game.breakBlock(block);
+
+        line brokenSoFar = global "%uuid brokenLogs".len();
+        line brokenReq = global "%uuid blocksToBreak".len();
+        if(
+            brokenSoFar / brokenReq > 0.9
+        ) {
+            for(line block2 of global "%uuid blocksToBreak") {
+                if(game.getBlockMaterial(block2) != "air" && !global "%uuid brokenLogs".contains(block2)) {
+                    global "%uuid brokenLogs".append(block2);
+                    saved "%uuid logs" += 1;
+                }
+                game.breakBlock(block2);
+            }
+            start treegens.growForPlayer();
+        }
     }
 }

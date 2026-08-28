@@ -66,12 +66,10 @@ namespace throwingaxe {
             if(game.getBlockMaterial(adj) == "air") {
                 continue;
             }
-            line blocks = sweeping.getBlockOrders(adj, 5, game.getBlockMaterial(adj));
+            line blocks = sweeping.getBlockOrders(adj, 0, game.getBlockMaterial(adj));
             sweeping.safeBreak(adj);
             sweeping.executeSweep(saved "%uuid logs", blocks);
-            if(!blocks.flatten().sizeEquals(0)) {
-                break;
-            }
+            break;
         }
     }
 }

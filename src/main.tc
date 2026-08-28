@@ -29,11 +29,28 @@ playerevent join {
         particles = "None",
         showIcon = "False"
     );
+
+    declare global "%uuid roomPos": loc = roomPositions.pop();
+    if(global "%uuid roomPos" == 0) {
+        player.kick();
+    }
+
+    player.teleport(
+        (global "%uuid roomPos").shiftAllAxes(-6, 0, -6)
+    );
+    start treegens.growForPlayer();
+
 }
 
 import loops;
 
 gameevent startup {
+    declare global roomPositions: list[loc] = [
+        loc(25, 50, 25),
+        loc(25, 50, 75),
+        loc(75, 50, 25),
+        loc(75, 50, 75)
+    ];
     start loops.executePlayerLoops();
 }
 
@@ -43,7 +60,7 @@ import sweeping;
 playerevent breakBlock {
     line blocks = sweeping.getBlockOrders(
         event.blockLocation,
-        500,
+        6,
         game.getBlockMaterial(event.blockLocation)
     );
     sweeping.safeBreak(event.blockLocation);

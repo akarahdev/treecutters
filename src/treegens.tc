@@ -1,7 +1,31 @@
+import treegens;
+
 namespace treegens {
     big = "big";
     small = "small";
     tiny = "tiny";
+
+    process growForPlayer() {
+        if(global "%uuid treeRegenerating" == 1) {
+            endthread;
+        } 
+        
+        declare global "%uuid treeRegenerating" = 1;
+        player.launchUp(2);
+        wait(1);
+        player.launchTowardLocation(
+            global "%uuid roomPos",
+            -5
+        );
+        wait(20);
+
+        global "%uuid brokenLogs" = [];
+        declare global "%uuid blocksToBreak" = treegens.buildOakTree(
+            global "%uuid roomPos",
+            treegens.tiny
+        );
+        global "%uuid treeRegenerating" = 0;
+    }
 
     function buildOakTree(
         root: loc,
@@ -84,8 +108,8 @@ namespace treegens {
                     placed = 1;
                 }
                 game.setBlock(item("stripped_oak_wood"), pathPos);
-                outputPositions.append(pathPos);
                 if(placed == 1) {
+                    outputPositions.append(pathPos.align());
                     wait(1);
                 }
             }
@@ -94,6 +118,7 @@ namespace treegens {
         }
 
         outputPositions.removeDuplicates();
+        print(outputPositions);
         return outputPositions;
     }
 }

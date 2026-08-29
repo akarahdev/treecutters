@@ -16,7 +16,7 @@ namespace treegens {
         global "%uuid brokenLogs" = [];
         declare global "%uuid blocksToBreak" = treegens.buildOakTree(
             global "%uuid roomPos",
-            treegens.tiny
+            treegens.big
         );
         global "%uuid treeRegenerating" = 0;
     }

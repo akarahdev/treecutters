@@ -1,3 +1,5 @@
+import stats;
+
 namespace loops {
     process executePlayerLoops() {
         repeat {
@@ -10,5 +12,45 @@ namespace loops {
     
     process playerLoop() {
         player.sendActionBar(s"<dark_green>╟ <green>%var(%uuid logs) Logs");
+
+        if(game.ticksSinceStartup % 5 == 0) {
+            updatePlayerInv();
+            stats.computeStats();
+        }
+    }
+
+    function updatePlayerInv() {
+        line logs = saved "%uuid logs";
+
+        line basicLogs = (logs % 64);
+        line enchLogs = ((logs / 64) % 64);
+        line hyperEnchLogs = ((logs / 64 / 64) % 64);
+
+        line basicLogItem = item("stripped_oak_wood", basicLogs);
+        basicLogItem = basicLogItem.setName(s"");
+        basicLogItem = basicLogItem.setTooltipVisible(tooltip = "Disable");
+        line enchLogItem = item("stripped_oak_wood", enchLogs);
+        enchLogItem = enchLogItem.setHiddenComponents("enchantments");
+        enchLogItem = enchLogItem.addEnchant("sharpness", 1);
+        enchLogItem = enchLogItem.setName(s"");
+        enchLogItem = enchLogItem.setTooltipVisible(tooltip = "Disable");
+        line hyperEnchLogItem = item("stripped_spruce_wood", hyperEnchLogs);
+        hyperEnchLogItem = hyperEnchLogItem.setHiddenComponents("enchantments");
+        hyperEnchLogItem = hyperEnchLogItem.addEnchant("sharpness", 1);
+        hyperEnchLogItem = hyperEnchLogItem.setName(s"");
+        hyperEnchLogItem = hyperEnchLogItem.setTooltipVisible(tooltip = "Disable");
+        line slot = 2;
+        if(hyperEnchLogs > 1) {
+            player.setItemInSlot(hyperEnchLogItem, slot);
+            slot++;
+        }
+        if(enchLogs > 1) {
+            player.setItemInSlot(enchLogItem, slot);
+            slot++;
+        }
+        if(basicLogs > 1) {
+            player.setItemInSlot(basicLogItem, slot);
+            slot++;
+        }
     }
 }

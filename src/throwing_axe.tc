@@ -113,7 +113,7 @@ namespace throwingaxe {
             if(!(str.setToString(global woodTypeList).contains(mat))) {
                 continue;
             }
-            line blocks = sweeping.getBlockOrders(adj, 0);
+            line blocks = sweeping.getBlockOrders(adj, (global "%uuid stats")["sweep"]);
             sweeping.safeBreak(adj);
             sweeping.executeSweep(saved "%uuid logs", blocks);
             break;

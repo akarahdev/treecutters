@@ -1,0 +1,21 @@
+import statShopIcon;
+
+namespace stats {
+    function computeStats() {
+        line stats: dict[num] = {};
+
+        stats["sweep"] = 0;
+
+        for(line iconKey of namespace.getKeys(statShopIcon)) {
+            line level = saved "%uuid statShop"[iconKey];
+            line stat = statShopIcon[iconKey].stat;
+            line amount = statShopIcon[iconKey].amount;
+            stats[stat] += amount * level;
+        }
+
+        line jumpBoostEffect = pot("Jump Boost", stats["jump_height"], 100);
+        player.givePotionEffect(jumpBoostEffect, particles = "None", showIcon = "False");
+
+        global "%uuid stats" = stats;
+    }
+}

@@ -1,0 +1,77 @@
+declare global "%uuid openInventory": inventory;
+
+type inventory: { rows: num, slots: list[item] };
+
+extend inventory {
+    function constructor(rows: num): inventory {
+        if(rows < 1 || rows > 6) {
+            print("Expected 1-6 rows, got " + rows);
+            endthread;
+        }
+        line baseList: list[item] = [];
+        for(line idx of range(1, rows * 9)) {
+            baseList.append(item("air"));
+        }
+        return { rows: rows, slots: baseList } as inventory;
+    }
+
+    function setItem(this: var[inventory], slot: num, i: item) {
+        line slots = this["slots"];
+        slots[slot] = i;
+        this["slots"] = slots;
+    }
+
+    function getItem(this: inventory, slot: num): item {
+        return this["slots"][slot];
+    }
+
+    function tiledMenu(rows: num): inventory {
+        if(rows < 1 || rows > 6) {
+            print("Expected 1-6 rows, got " + rows);
+            endthread;
+        }
+
+        line tile = item("black_stained_glass_pane");
+        tile = tile.setTooltipVisible(tooltip = "Disable");
+
+        line baseList: list[item] = [];
+        for(line idx of range(1, rows * 9)) {
+            baseList.append(tile);
+        }
+
+        return { rows: rows, slots: baseList } as inventory;
+    }
+
+    function openForSelection(this: inventory) {
+        if(this["rows"] == 1) {
+            player.showInventoryMenu();
+            player.removeInventoryMenuRow(2);
+        }
+        if(this["rows"] == 2) {
+            player.showInventoryMenu();
+            player.removeInventoryMenuRow(1);
+        }
+        if(this["rows"] == 3) {
+            player.showInventoryMenu();
+        }
+        if(this["rows"] == 4) {
+            player.showInventoryMenu();
+            player.addInventoryMenuRow();
+        }
+        if(this["rows"] == 5) {
+            player.showInventoryMenu();
+            player.expandInventoryMenu();
+            player.removeInventoryMenuRow();
+        }
+        if(this["rows"] == 6) {
+            player.showInventoryMenu();
+            player.expandInventoryMenu();
+        }
+
+        global "%uuid openInventory" = this;
+
+        for(line idx of range(1, this["rows"] * 9)) {
+            player.setInventoryMenuItem(idx, this["slots"][idx]);
+        }
+    }
+}

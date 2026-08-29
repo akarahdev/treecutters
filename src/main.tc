@@ -2,19 +2,19 @@ declare saved "%uuid logs": num;
 declare global "%uuid brokenLogs": list[loc];
 
 playerevent join {
+    declare saved "%uuid statShop": dict[num];
+    declare global "%uuid stats": dict[num] = {};
+
     player.setToSurvivalMode();
 
-    line tool = item("music_disc_cat");
+    line tool = item("potato");
     tool = tool.setModel("minecraft:iron_axe");
     tool = tool.addToolMiningRule(
-        500,
+        1000,
         global woodTypeList
     );
     tool = tool.setTag("axe", 1);
-
-    player.giveItems(item("birch_sapling"));
-    player.giveItems(item("oak_sapling"));
-    player.giveItems(item("spruce_sapling"), 64);
+    tool = tool.setName(s"🪓 Axe");
     player.giveItems(tool);
     player.enableBlockModification(
         global woodTypeList
@@ -77,7 +77,7 @@ playerevent breakBlock {
     }
     line blocks = sweeping.getBlockOrders(
         event.blockLocation,
-        0
+        (global "%uuid stats")["sweep"]
     );
     sweeping.safeBreak(event.blockLocation);
     sweeping.executeSweep(saved "%uuid logs", blocks);
@@ -113,4 +113,19 @@ playerevent rightClick {
         p.shiftInDirection(0.25);
         start throwingaxe.throw(p);
     }
+}
+
+playerevent clickInventorySlot {
+    event.cancel();
+}
+
+import statShop;
+
+playerevent swapHands {
+    event.cancel();
+    statShop.openMenu();
+}
+
+playerevent clickMenuSlot {
+    statShop.clickStatShopIcon();
 }

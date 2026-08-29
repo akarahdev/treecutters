@@ -78,7 +78,7 @@ namespace sweeping {
         line mat = game.getBlockMaterial(block);
         if(mat != "air" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
-            saved "%uuid logs" += 1;
+            saved "%uuid logs" += 1 + (global "%uuid stats"["fortune"]);
         }
         game.breakBlock(block);
         
@@ -93,7 +93,7 @@ namespace sweeping {
                 line mat2 = game.getBlockMaterial(block2);
                 if(mat2 != "air" && !global "%uuid brokenLogs".contains(block2)) {
                     global "%uuid brokenLogs".append(block2);
-                    saved "%uuid logs" += 1;
+                    saved "%uuid logs" += 1 + (global "%uuid stats"["fortune"]);
                     start blockFallAnim(block2, mat);
                 }
                 game.breakBlock(block2);
@@ -120,17 +120,15 @@ namespace sweeping {
 
         wait(1);
         select entitiesByUUID(uuid);
-        while(entity.exists()) {
-            entity.setDisplayTeleportDuration(59);
-            entity.setDisplayInterpolation(59);
-            wait(1);
-            entity.teleport(block.shiftAllAxes(xOff, -30, zOff));
-            entity.setDisplayRotationFromEulerAngles(pitchOff, yawOff, rollOff);
-            wait(40);
-        }
-        
-        
+        entity.setDisplayTeleportDuration(59);
+        entity.setDisplayInterpolation(59);
+        wait(1);
+        entity.teleport(block.shiftAllAxes(xOff, -30, zOff));
+        entity.setDisplayRotationFromEulerAngles(pitchOff, yawOff, rollOff);
+        wait(40);
         entity.remove();
+        
+        
         select reset;
     }
 }

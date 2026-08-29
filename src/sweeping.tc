@@ -76,11 +76,14 @@ namespace sweeping {
             event.cancel();
             return;
         }
-        if(game.getBlockMaterial(block) != "air" && !global "%uuid brokenLogs".contains(block)) {
+        line mat = game.getBlockMaterial(block);
+        if(mat != "air" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
             saved "%uuid logs" += 1;
         }
         game.breakBlock(block);
+        
+        start blockFallAnim(block, mat);
 
         line brokenSoFar = global "%uuid brokenLogs".len();
         line brokenReq = global "%uuid blocksToBreak".len();
@@ -88,13 +91,47 @@ namespace sweeping {
             brokenSoFar / brokenReq > 0.9
         ) {
             for(line block2 of global "%uuid blocksToBreak") {
-                if(game.getBlockMaterial(block2) != "air" && !global "%uuid brokenLogs".contains(block2)) {
+                line mat2 = game.getBlockMaterial(block2);
+                if(mat2 != "air" && !global "%uuid brokenLogs".contains(block2)) {
                     global "%uuid brokenLogs".append(block2);
                     saved "%uuid logs" += 1;
+                    start blockFallAnim(block2, mat);
                 }
                 game.breakBlock(block2);
             }
             start treegens.growForPlayer();
         }
+    }
+
+    process blockFallAnim(
+        block: loc,
+        mat: str
+    ) {
+        block = block.align();
+        game.spawnItemDisplay(block, item(mat));
+        line uuid = lastEntity.uuid;
+
+        line xOff = num.random(-2, 2, rounding = "Decimal number");
+        line zOff = num.random(-2, 2, rounding = "Decimal number");
+
+
+        line pitchOff = num.random(-90, 90, rounding = "Decimal number");
+        line yawOff = num.random(-90, 90, rounding = "Decimal number");
+        line rollOff = num.random(-90, 90, rounding = "Decimal number");
+
+        wait(1);
+        select entitiesByUUID(uuid);
+        while(entity.exists()) {
+            entity.setDisplayTeleportDuration(59);
+            entity.setDisplayInterpolation(59);
+            wait(1);
+            entity.teleport(block.shiftAllAxes(xOff, -30, zOff));
+            entity.setDisplayRotationFromEulerAngles(pitchOff, yawOff, rollOff);
+            wait(40);
+        }
+        
+        
+        entity.remove();
+        select reset;
     }
 }

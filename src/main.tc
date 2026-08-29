@@ -47,6 +47,10 @@ playerevent join {
 
 }
 
+playerevent leave {
+    global roomPositions.append(global "%uuid roomPos");
+}
+
 import loops;
 
 gameevent startup {
@@ -105,6 +109,8 @@ import throwingaxe;
 
 playerevent rightClick {
     if(player.mainHandItem.getTag("axe") != 0) {
-        start throwingaxe.throw(player.eyeLocation);
+        line p = player.eyeLocation;
+        p.shiftInDirection(0.25);
+        start throwingaxe.throw(p);
     }
 }

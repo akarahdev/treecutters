@@ -11,12 +11,6 @@ namespace treegens {
         } 
 
         declare global "%uuid treeRegenerating" = 1;
-        player.launchUp(2);
-        wait(1);
-        player.launchTowardLocation(
-            global "%uuid roomPos",
-            -5
-        );
         wait(20);
 
         global "%uuid brokenLogs" = [];
@@ -72,6 +66,7 @@ namespace treegens {
             for(line offset of log_positions) {
                 line added = root.shiftOnVector(offset);
                 game.setBlock(item("stripped_oak_wood"), added);
+                allPlayers.playSound(snd("Wood Place"), added);
                 outputPositions.append(added);
             }
             wait(1);
@@ -108,6 +103,7 @@ namespace treegens {
                     placed = 1;
                 }
                 game.setBlock(item("stripped_oak_wood"), pathPos);
+                allPlayers.playSound(snd("Wood Place"), pathPos);
                 if(placed == 1) {
                     outputPositions.append(pathPos.align());
                     wait(1);

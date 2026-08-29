@@ -1,0 +1,11 @@
+namespace ability {
+    schema: namespace {
+        material: str;
+        name: str;
+        cost: num;
+    };
+}
+
+namespace skilltree {
+
+}

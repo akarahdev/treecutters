@@ -1,7 +1,9 @@
 import treegens;
 
 namespace treegens {
+    mega = "mega";
     big = "big";
+    medium = "medium";
     small = "small";
     tiny = "tiny";
 
@@ -16,7 +18,7 @@ namespace treegens {
         global "%uuid brokenLogs" = [];
         declare global "%uuid blocksToBreak" = treegens.buildOakTree(
             global "%uuid roomPos",
-            treegens.big
+            treegens.mega
         );
         global "%uuid treeRegenerating" = 0;
     }
@@ -33,7 +35,7 @@ namespace treegens {
             log_positions = [
                 vec(0, 0, 0)
             ];
-            height = num.random(5, 7);
+            height = num.random(4, 5);
             branchReqs = 2;
         }  
         if(size == small) {
@@ -43,9 +45,24 @@ namespace treegens {
                 vec(1, 0, 0),
                 vec(1, 0, 1)
             ];
-            height = num.random(7, 11);
+            height = num.random(6, 9);
             branchReqs = 3;
         }
+        if(size == medium) {
+            log_positions = [
+                vec(0, 0, 0),
+                vec(0, 0, 1),
+                vec(1, 0, 0),
+                vec(1, 0, 1),
+                vec(1, 0, -1),
+                vec(-1, 0, 1),
+                vec(0, 0, -1),
+                vec(-1, 0, 0),
+                vec(-1, 0, -1)
+            ];
+            height = num.random(7, 10);
+            branchReqs = 3;
+        }   
         if(size == big) {
             log_positions = [
                 vec(0, 0, 0),
@@ -58,8 +75,27 @@ namespace treegens {
                 vec(-1, 0, 0),
                 vec(-1, 0, -1)
             ];
-            height = num.random(11, 14);
+            height = num.random(10, 13);
             branchReqs = 4;
+        }
+        if(size == mega) {
+            log_positions = [
+                vec(0, 0, 0),
+                vec(0, 0, 1),
+                vec(1, 0, 0),
+                vec(1, 0, 1),
+                vec(1, 0, -1),
+                vec(-1, 0, 1),
+                vec(0, 0, -1),
+                vec(-1, 0, 0),
+                vec(-1, 0, -1),
+                vec(2, 0, 0),
+                vec(-2, 0, 0),
+                vec(0, 0, 2),
+                vec(0, 0, -2)
+            ];
+            height = num.random(12, 14);
+            branchReqs = 6;
         }   
 
         for(line i of range(0, height)) {
@@ -77,6 +113,8 @@ namespace treegens {
         line terminalLength = num.floor(height * 0.6);
         line iterations = 0;
         line branches = 0;
+        line yawOffset = num.random(0, 360);
+        line yawDiff = 360 / branchReqs;
         repeat {
             wait(1);
             iterations++;
@@ -86,15 +124,11 @@ namespace treegens {
             if(branches >= branchReqs) {
                 break;
             }
-            line yaw = num.random(0, 360);
+            line yaw = yawOffset + (yawDiff * branches);
             line pitch = num.random(-30, 30);
             line rootCopy = root.shiftAllDirections(0, 0, 0);
             rootCopy.pitch += pitch;
             rootCopy.yaw += yaw;
-            line checkLoc = rootCopy.shiftInDirection(2, direction = "Forward");
-            if(game.getBlockMaterial(checkLoc) != "air") {
-                continue;
-            }
             line targetLoc = rootCopy.shiftInDirection(terminalLength, direction = "Forward");   
 
             for(line pathPos of path(root, targetLoc, 0.25)) {

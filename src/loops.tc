@@ -12,10 +12,14 @@ namespace loops {
     
     process playerLoop() {
         player.sendActionBar(s"<dark_green>╟ <green>%var(%uuid logs) Logs");
+        player.setSaturationLevel(20);
+        player.setFoodLevel(20);
 
         if(game.ticksSinceStartup % 5 == 0) {
             updatePlayerInv();
             stats.computeStats();
+
+            player.givePotionEffect(pot("Night Vision", 1, 100000), particles = "None", showIcon = "False");
         }
     }
 

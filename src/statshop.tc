@@ -37,9 +37,17 @@ namespace statShopIcon.jumpHeight {
     maxLevel = 4;
 }
 
+namespace statShopIcon.abilityCooldown {
+    material = "clock";
+    name = "Ability Cooldown";
+    stat = "ability_cooldown";
+    amount = 1;
+    basePrice = 200;
+    priceScaling = 2;
+    maxLevel = 10;
+}
 
 import statShopIcon;
-
 
 namespace statShop {
     function openMenu() {
@@ -54,19 +62,18 @@ namespace statShop {
                 saved "%uuid statShop"[iconKey]
             );
 
+            line level = saved "%uuid statShop"[iconKey];
             line icon = item("acacia_boat");
             icon = icon.setModel(material);
             icon = icon.setName(s"<green>%var(name)");
+            icon = icon.addLore(s"<dark_gray>Level %var(level)");
+            icon = icon.addLore(s"");
             icon = icon.addLore(s"<gray>Costs <green>%var(cost) <gray>logs to upgrade.");
             icon = icon.addLore(s"");
             icon = icon.addLore(s"<yellow>Click to upgrade!");
             icon = icon.setTag("upgrade", iconKey);
 
             inv.setItem(slot, icon);
-            print(slot);
-            print(icon);
-
-            print(inv);
             
             slot++;
         }

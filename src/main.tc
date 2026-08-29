@@ -4,6 +4,7 @@ declare global "%uuid brokenLogs": list[loc];
 playerevent join {
     declare saved "%uuid statShop": dict[num];
     declare global "%uuid stats": dict[num] = {};
+    global "%uuid treeRegenerating" = 0;
 
     player.setToSurvivalMode();
 
@@ -38,13 +39,25 @@ playerevent join {
     player.teleport(
         (global "%uuid roomPos").shiftAllAxes(-6, 0, -6)
     );
+
+    game.setRegion(
+        "dirt" as item,
+        global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
+        global "%uuid roomPos".shiftAllAxes(25, 31, 25)
+    );
     game.setRegion(
         "air" as item,
-        global "%uuid roomPos".shiftAllAxes(-25, 0, -25),
-        global "%uuid roomPos".shiftAllAxes(25, 30, 25)
+        global "%uuid roomPos".shiftAllAxes(-24, 0, -24),
+        global "%uuid roomPos".shiftAllAxes(24, 30, 24)
+    );
+    game.setRegion(
+        "light" as item,
+        global "%uuid roomPos".shiftAllAxes(-24, 0, -24),
+        global "%uuid roomPos".shiftAllAxes(24, 0, 24)
     );
     start treegens.growForPlayer();
 
+    player.setAllowFlight(allow = "Enable");
 }
 
 playerevent leave {
@@ -84,34 +97,23 @@ playerevent breakBlock {
 }
 
 playerevent placeBlock {
-    event.uncancel();
-    if(event.blockEquals(item("birch_sapling"))) {
-        treegens.buildOakTree(
-            event.blockLocation,
-            treegens.tiny
-        );
-    }
-    if(event.blockEquals(item("oak_sapling"))) {
-        treegens.buildOakTree(
-            event.blockLocation,
-            treegens.small
-        );
-    }
-    if(event.blockEquals(item("spruce_sapling"))) {
-        treegens.buildOakTree(
-            event.blockLocation,
-            treegens.big
-        );
-    }
+    event.cancel();
 }
 
 import throwingaxe;
 
 playerevent rightClick {
     if(player.mainHandItem.getTag("axe") != 0) {
+        if(player.getItemCooldown(player.mainHandItem) != 0) {
+            endthread;
+        }
         line p = player.eyeLocation;
         p.shiftInDirection(0.25);
         start throwingaxe.throw(p);
+        player.setItemCooldown(
+            player.mainHandItem, 
+            10 - (global "%uuid stats"["ability_cooldown"])
+        );
     }
 }
 
@@ -128,4 +130,14 @@ playerevent swapHands {
 
 playerevent clickMenuSlot {
     statShop.clickStatShopIcon();
+}
+
+playerevent takeDamage {
+    event.cancel();
+}
+
+playerevent startFlight {
+    event.cancel();
+    player.launchUp(4, addToCurrentVel = "False");
+    player.launchForward(9, addToCurrentVel = "True");
 }

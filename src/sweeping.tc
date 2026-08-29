@@ -18,6 +18,8 @@ namespace sweeping {
         origin: loc,
         maxBlocks: num
     ): list[list[loc]] {
+        maxBlocks = sweepMod(maxBlocks, game.getBlockMaterial(origin));
+
         line breakQueue: list[list[loc]] = [];
         line currentBlockList: list[loc] = [origin];
         line breaksNextTick: list[loc] = [];
@@ -78,7 +80,7 @@ namespace sweeping {
         line mat = game.getBlockMaterial(block);
         if(mat != "air" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
-            saved "%uuid logs" += 1 + (global "%uuid stats"["fortune"]);
+            saved "%uuid logs" += logMod(mat) * (global "%uuid stats"["fortune"] + 1);
         }
         game.breakBlock(block);
         
@@ -93,7 +95,7 @@ namespace sweeping {
                 line mat2 = game.getBlockMaterial(block2);
                 if(mat2 != "air" && !global "%uuid brokenLogs".contains(block2)) {
                     global "%uuid brokenLogs".append(block2);
-                    saved "%uuid logs" += 1 + (global "%uuid stats"["fortune"]);
+                    saved "%uuid logs" += logMod(mat) * (global "%uuid stats"["fortune"] + 1);
                     start blockFallAnim(block2, mat);
                 }
                 game.breakBlock(block2);
@@ -130,5 +132,38 @@ namespace sweeping {
         
         
         select reset;
+    }
+
+
+
+    function sweepMod(sweep: num, mat: str): num {
+        if(mat == "stripped_oak_wood") {
+            return sweep;
+        }
+        if(mat == "stripped_spruce_wood") {
+            return getBlocksBroken(sweep, 7);
+        }
+        if(mat == "stripped_cherry_wood") {
+            return getBlocksBroken(sweep, 15);
+        }
+        if(mat == "stripped_warped_stem") {
+            return getBlocksBroken(sweep, 25);
+        }
+        return 1;
+    }
+
+    function logMod(mat: str): num {
+        if(mat == "stripped_oak_wood") {
+            return 1;
+        }
+        if(mat == "stripped_spruce_wood") {
+            return 3;
+        }
+        if(mat == "stripped_cherry_wood") {
+            return 8;
+        }
+        if(mat == "stripped_warped_stem") {
+            return 15;
+        }
     }
 }

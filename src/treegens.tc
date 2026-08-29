@@ -1,4 +1,5 @@
 import treegens;
+import util;
 
 namespace treegens {
     mega = "mega";
@@ -16,21 +17,19 @@ namespace treegens {
         wait(20);
 
         global "%uuid brokenLogs" = [];
-        declare global "%uuid blocksToBreak" = treegens.buildOakTree(
+        declare global "%uuid blocksToBreak" = treegens.buildWarpedTree(
             global "%uuid roomPos",
             treegens.mega
         );
         global "%uuid treeRegenerating" = 0;
     }
 
-    function buildOakTree(
-        root: loc,
+    function sizeVariables(
         size: str
-    ): list[loc] {
+    ): [list[vec], num, num] {
         line log_positions: list[vec];
         line height: num;
         line branchReqs: num;
-        line outputPositions: list[loc] = [];
         if(size == tiny) {
             log_positions = [
                 vec(0, 0, 0)
@@ -96,55 +95,244 @@ namespace treegens {
             ];
             height = num.random(12, 14);
             branchReqs = 6;
-        }   
+        }  
+        return [log_positions, height, branchReqs];
+    }
 
-        for(line i of range(0, height)) {
-            for(line offset of log_positions) {
-                line added = root.shiftOnVector(offset);
-                game.setBlock(item("stripped_oak_wood"), added);
-                allPlayers.playSound(snd("Wood Place"), added);
-                outputPositions.append(added);
-            }
-            wait(1);
-            root.y += 1;
-        }
-
-        root.y -= 1;
-        line terminalLength = num.floor(height * 0.6);
+    function buildBranches(
+        outputPositions: var[list[loc]],
+        root: loc,
+        length: num,
+        branches: num,
+        targetYOff: num,
+        centerDistance: num,
+        mat: item
+    ): list[loc] {
         line iterations = 0;
-        line branches = 0;
         line yawOffset = num.random(0, 360);
-        line yawDiff = 360 / branchReqs;
-        repeat {
-            wait(1);
-            iterations++;
-            if(iterations > 50) {
-                break;
-            }
-            if(branches >= branchReqs) {
-                break;
-            }
-            line yaw = yawOffset + (yawDiff * branches);
+        line yawDiff = 360 / branches;
+        line endcaps: list[loc] = [];
+        for(line idx of range(1, branches)) {
+            line yaw = yawOffset + (yawDiff * idx);
             line pitch = num.random(-30, 30);
             line rootCopy = root.shiftAllDirections(0, 0, 0);
-            rootCopy.pitch += pitch;
             rootCopy.yaw += yaw;
-            line targetLoc = rootCopy.shiftInDirection(terminalLength, direction = "Forward");   
+            rootCopy.shiftInDirection(centerDistance, direction = "Forward");
+            line targetLoc = rootCopy.shiftInDirection(length, direction = "Forward");  
+            targetLoc.y += targetYOff; 
 
-            for(line pathPos of path(root, targetLoc, 0.25)) {
+            line pathPos: loc;
+            for(pathPos of path(root, targetLoc, 0.25)) {
                 line placed = 0;
                 if(game.getBlockMaterial(pathPos) == "air") {
                     placed = 1;
                 }
-                game.setBlock(item("stripped_oak_wood"), pathPos);
+                game.setBlock(mat, pathPos);
                 allPlayers.playSound(snd("Wood Place"), pathPos);
                 if(placed == 1) {
                     outputPositions.append(pathPos.align());
-                    wait(1);
+                    util.fastWait(1/(global "%uuid stats"["tree_growth"]));
                 }
             }
-            branches++;
+            endcaps.append(pathPos);
+        }
+        return endcaps;
+    }
 
+    function buildTrunk(
+        outputPositions: var[list[loc]],
+        root: loc,
+        height: num,
+        logPositions: list[vec],
+        mat: item
+    ) {
+        for(line i of range(0, height)) {
+            for(line offset of logPositions) {
+                line added = root.shiftOnVector(offset);
+                game.setBlock(mat, added);
+                allPlayers.playSound(snd("Wood Place"), added);
+                outputPositions.append(added);
+                util.fastWait(1/(global "%uuid stats"["tree_growth"]));
+            }
+            root.y += 1;
+        }
+    }
+
+
+    function buildOakTree(
+        root: loc,
+        size: str
+    ): list[loc] {
+        line svars = sizeVariables(size);
+        line logPositions = svars[1];
+        line height = svars[2];
+        line branchReqs = svars[3];
+        line outputPositions: list[loc] = [];
+         
+        buildTrunk(
+            outputPositions,
+            root,
+            height,
+            logPositions,
+            item("stripped_oak_wood")
+        );
+
+        root.y += height;
+
+        buildBranches(
+            outputPositions,
+            root,
+            height / 2,
+            branchReqs,
+            num.random(-2, 2),
+            0,
+            item("stripped_oak_wood")
+        );
+        outputPositions.removeDuplicates();
+        return outputPositions;
+    }
+
+    function buildDarkTree(
+        root: loc,
+        size: str
+    ): list[loc] {
+        line svars = sizeVariables(size);
+        line logPositions = svars[1];
+        line height = svars[2];
+        line branchReqs = svars[3];
+        line outputPositions: list[loc] = [];
+
+        root.y += 5;
+
+        buildBranches(
+            outputPositions,
+            root,
+            6,
+            branchReqs,
+            -5,
+            0,
+            item("stripped_spruce_wood")
+        );
+
+        root.y -= 5;
+    
+        buildTrunk(
+            outputPositions,
+            root,
+            height,
+            logPositions,
+            item("stripped_spruce_wood")
+        );
+
+        root.y += height;
+
+        buildBranches(
+            outputPositions,
+            root,
+            height * 0.75,
+            branchReqs,
+            num.random(-3, 3),
+            0,
+            item("stripped_spruce_wood")
+        );
+
+        outputPositions.removeDuplicates();
+        return outputPositions;
+    }
+
+
+
+    function buildCherryTree(
+        root: loc,
+        size: str
+    ): list[loc] {
+        line svars = sizeVariables(size);
+        line logPositions = svars[1];
+        line height = svars[2];
+        line branchReqs = svars[3];
+        line outputPositions: list[loc] = [];
+        line dx = num.random(-1, 1);
+        line dz = num.random(-1, 1);
+
+        for(line part of range(1, 4)) {
+            buildTrunk(
+                outputPositions,
+                root,
+                height / 4,
+                logPositions,
+                item("stripped_cherry_wood")
+            );
+
+            root.y += height / 4;
+            root.x += dx;
+            root.z += dz;
+        }
+        
+
+        buildBranches(
+            outputPositions,
+            root,
+            height * 0.8,
+            branchReqs,
+            num.random(-3, 3),
+            0,
+            item("stripped_cherry_wood")
+        );
+
+        outputPositions.removeDuplicates();
+        return outputPositions;
+    }
+
+    function buildWarpedTree(
+        root: loc,
+        size: str
+    ): list[loc] {
+        line svars = sizeVariables(size);
+        line logPositions = svars[1];
+        line height = svars[2];
+        line branchReqs = svars[3];
+        line outputPositions: list[loc] = [];
+        line dx = num.random(-1, 1);
+        line dz = num.random(-1, 1);
+
+        buildTrunk(
+            outputPositions,
+            root,
+            height / 2,
+            logPositions,
+            item("stripped_warped_stem")
+        );
+
+        root.y += height / 2;
+
+        line endcaps = buildBranches(
+            outputPositions,
+            root,
+            height * 0.8,
+            branchReqs,
+            num.random(2, 4),
+            0,
+            item("stripped_warped_stem")
+        );
+
+        for(line endcap of endcaps) {
+            buildTrunk(
+                outputPositions,
+                endcap,
+                height / 2,
+                logPositions,
+                item("stripped_warped_stem")
+            );
+            endcap.y += height / 2;
+            buildBranches(
+                outputPositions,
+                endcap,
+                height * 0.4,
+                branchReqs,
+                num.random(2, 4),
+                0,
+                item("stripped_warped_stem")
+            );
         }
 
         outputPositions.removeDuplicates();

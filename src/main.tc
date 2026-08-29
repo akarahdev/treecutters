@@ -68,7 +68,10 @@ import loops;
 
 gameevent startup {
     declare global woodTypeList: list[item] = [
-        item("stripped_oak_wood")
+        item("stripped_oak_wood"),
+        item("stripped_spruce_wood"),
+        item("stripped_cherry_wood"),
+        item("stripped_warped_stem")
     ];
 
     declare global roomPositions: list[loc] = [

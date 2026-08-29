@@ -1,0 +1,11 @@
+namespace util {
+    function fastWait(freq: num) {
+        line oftency = 1 / freq;
+        local __fastWait: num;
+        local __fastWait = local __fastWait + 1;
+        if(__fastWait > oftency) {
+            __fastWait = 0;
+            wait(1);
+        }
+    }
+}

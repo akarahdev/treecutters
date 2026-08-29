@@ -5,6 +5,7 @@ namespace stats {
         line stats: dict[num] = {};
 
         stats["sweep"] = 0;
+        stats["tree_growth"] = 1;
 
         for(line iconKey of namespace.getKeys(statShopIcon)) {
             line level = saved "%uuid statShop"[iconKey];

@@ -15,7 +15,7 @@ namespace statShopIcon.sweep {
     name = "Sweep";
     stat = "sweep";
     basePrice = 40;
-    priceScaling = 1.3;
+    priceScaling = 1.15;
 }
 
 namespace statShopIcon.logFortune {
@@ -44,6 +44,15 @@ namespace statShopIcon.abilityCooldown {
     amount = 1;
     basePrice = 200;
     priceScaling = 2;
+    maxLevel = 10;
+}
+
+namespace statShopIcon.treeGrowthSpeed {
+    material = "cherry_sapling";
+    name = "Tree Growth Speed";
+    stat = "tree_growth";
+    amount = 1;
+    basePrice = 50;
     maxLevel = 10;
 }
 

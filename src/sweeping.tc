@@ -38,14 +38,14 @@ namespace sweeping {
             line el = currentBlockList.pop(num.random(1, currentBlockList.len()));
             for(line adj of adjacent(el, pattern = "Adjacent (6 blocks)")) {
                 line mat = game.getBlockMaterial(adj);
-                if(!brokenBlocks.contains(adj) && global woodTypeList.contains(mat)) {
+                if(!brokenBlocks.contains(adj) && mat != "air" && str.setToString(global woodTypeList).contains(mat)) {
                     breaksNextTick.append(adj);
                     brokenBlocks.append(adj);
-                }   
+                }
             }
             for(line adj of adjacent(el, pattern = "Cube (26 blocks)")) {
                 line mat = game.getBlockMaterial(adj);
-                if(!brokenBlocks.contains(adj) && global woodTypeList.contains(mat)) {
+                if(!brokenBlocks.contains(adj) && mat != "air" && str.setToString(global woodTypeList).contains(mat)) {
                     breaksNextTick.append(adj);
                     brokenBlocks.append(adj);
                 }   
@@ -60,7 +60,6 @@ namespace sweeping {
         incrementOnBlock: var[num],
         blocks: list[list[loc]]
     ): num {
-
         line flat = blocks.flatten();
         flat.removeDuplicates();
         for(line block of flat) {

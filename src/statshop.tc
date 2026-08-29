@@ -3,10 +3,11 @@ namespace statShopIcon {
         material: str;
         name: str;
         stat: str;
-        basePrice: num;
+        basePrice: num = 0;
         amount: num = 1;
         priceScaling: num = 1.15;
         maxLevel: num = 50;
+        priceBrackets: list[num] = [];
     };
 }
 
@@ -14,7 +15,7 @@ namespace statShopIcon.sweep {
     material = "iron_axe";
     name = "Sweep";
     stat = "sweep";
-    basePrice = 40;
+    basePrice = 20;
     priceScaling = 1.15;
 }
 
@@ -27,32 +28,12 @@ namespace statShopIcon.logFortune {
     priceScaling = 1.15;
 }
 
-namespace statShopIcon.jumpHeight {
-    material = "feather";
-    name = "Jump Height";
-    stat = "jump_height";
-    amount = 1;
-    basePrice = 200;
-    priceScaling = 3;
-    maxLevel = 4;
-}
-
-namespace statShopIcon.abilityCooldown {
-    material = "clock";
-    name = "Ability Cooldown";
-    stat = "ability_cooldown";
-    amount = 1;
-    basePrice = 200;
-    priceScaling = 2;
-    maxLevel = 10;
-}
-
 namespace statShopIcon.treeGrowthSpeed {
     material = "cherry_sapling";
     name = "Tree Growth Speed";
     stat = "tree_growth";
     amount = 1;
-    basePrice = 50;
+    basePrice = 30;
     maxLevel = 10;
 }
 
@@ -72,6 +53,13 @@ namespace statShop {
             );
 
             line level = saved "%uuid statShop"[iconKey];
+
+
+            line priceBrackets = statShopIcon[iconKey].priceBrackets;
+            if(!priceBrackets.sizeEquals(0)) {
+                cost = priceBrackets[level + 1];
+            }
+
             line icon = item("acacia_boat");
             icon = icon.setModel(material);
             icon = icon.setName(s"<green>%var(name)");
@@ -97,6 +85,11 @@ namespace statShop {
                 statShopIcon[iconKey].priceScaling, 
                 saved "%uuid statShop"[iconKey]
             );
+            line level = saved "%uuid statShop"[iconKey];
+            line priceBrackets = statShopIcon[iconKey].priceBrackets;
+            if(!priceBrackets.sizeEquals(0)) {
+                cost = priceBrackets[level + 1];
+            }
             if(saved "%uuid logs" > cost) {
                 saved "%uuid logs" -= cost;
                 saved "%uuid statShop"[iconKey] += 1;

@@ -1,11 +1,253 @@
+
+
 namespace ability {
     schema: namespace {
-        material: str;
         name: str;
         cost: num;
+        position: vec;
+        description: list[str] = [];
+        dependencies: list[str] = [];
+        statBuffs: dict[num];
     };
 }
 
-namespace skilltree {
+namespace ability.throwing_axe {
+    name = "Throwing Axe";
+    cost = 10;
+    description: list[str] = ["Enables right-clicking to throw", "your axe."];
+    position = vec(5, 2, 0);
+    statBuffs: dict[num] = {};
+}
 
+namespace ability.bonus_sweep_1 {
+    name = "Bonus Sweep I";
+    cost = 10;
+    description: list[str] = ["Gain +1 Sweep."];
+    position = vec(5, 4, 0);
+    dependencies: list[str] = ["throwing_axe"];
+    statBuffs: dict[num] = {
+        "sweep": 1
+    };
+}
+
+namespace ability.small_oak {
+    name = "Small Oak";
+    cost = 20;
+    description: list[str] = ["Upgrades your oak trees from tiny to small."];
+    position = vec(5, 8, 0);
+    dependencies: list[str] = ["bonus_sweep_1"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.double_jump {
+    name = "Double Jump";
+    cost = 80;
+    description: list[str] = ["Enable flight mid-air to double jump.", "Scales with Jump Boost."];
+    position = vec(7, 4, 0);
+    dependencies: list[str] = ["bonus_sweep_1"];
+    statBuffs: dict[num] = {};
+}
+
+namespace ability.jump_boost_1 {
+    name = "Jump Boost 1";
+    cost = 40;
+    description: list[str] = ["Adds extra jump height."];
+    position = vec(5, 6, 0);
+    dependencies: list[str] = ["bonus_sweep_1"];
+    statBuffs: dict[num] = {};
+}
+
+namespace ability.medium_oak {
+    name = "Medium Oak";
+    cost = 80;
+    description: list[str] = ["Upgrades your oak trees from small to medium."];
+    position = vec(5, 10, 0);
+    dependencies: list[str] = ["jump_boost_1"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.jump_boost_2 {
+    name = "Jump Boost 2";
+    cost = 100;
+    description: list[str] = ["Adds +1 tier of jump boost."];
+    position = vec(3, 8, 0);
+    dependencies: list[str] = ["jump_boost_1", "medium_oak"];
+    statBuffs: dict[num] = {
+        "jump_height": 1
+    };
+}
+
+namespace ability.big_oak {
+    name = "Big Oak";
+    cost = 300;
+    description: list[str] = ["Upgrades your oak trees from medium to big."];
+    position = vec(5, 12, 0);
+    dependencies: list[str] = ["medium_oak"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_oak {
+    name = "Mega Oak";
+    cost = 700;
+    description: list[str] = ["Upgrades your oak trees from big to mega."];
+    position = vec(5, 14, 0);
+    dependencies: list[str] = ["mega_oak"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+declare saved "%uuid abilities": list[str];
+
+import ability;
+import skilltree;
+import util;
+
+namespace skilltree {
+    function openMenu() {
+        declare global "%uuid abilMenuOffX": num;
+        declare global "%uuid abilMenuOffY": num;
+
+        line inv = inventory.tiledMenu(6);
+
+        for(line abilityKey of namespace.getKeys(ability)) {
+            line cost = ability[abilityKey].cost;
+            line dependencies = ability[abilityKey].dependencies;
+            line description = ability[abilityKey].description;
+            line name = ability[abilityKey].name;
+            line position = ability[abilityKey].position;
+            line statBuffs = ability[abilityKey].statBuffs;
+
+            line icon = item("acacia_boat");
+
+            line has_dependencies = 1;
+            for(line dep of dependencies) {
+                if(!saved "%uuid abilities".contains(dep)) {
+                    has_dependencies = 0;
+                }
+            }
+
+
+            
+
+            if(saved "%uuid abilities".contains(abilityKey)) {
+                icon = icon.setModel("emerald");
+                icon = icon.addLore(s"<green>Purchased!");
+            } else if(has_dependencies == 1) {
+                icon = icon.setModel("diamond");
+                icon = icon.addLore(s"<yellow>Purchasable");
+            } else {
+                icon = icon.setModel("coal");
+                icon = icon.addLore(s"<dark_gray>Locked");
+            }
+            icon = icon.setName(s"<green>%var(name)");
+
+            icon = icon.addLore(s"");
+            if(!description.sizeEquals(0)) {
+                for(line loreLine of description) {
+                    icon = icon.addLore(s"<gray>%var(loreLine)");
+                }
+                icon = icon.addLore(s"");
+            }
+            icon = icon.addLore(s"<gray>Cost: <green>%var(cost) Logs");
+            icon = icon.addLore(s"");
+            icon = icon.addLore(s"<yellow>Click to upgrade!");
+            icon = icon.setTag("unlock_ability", abilityKey);
+
+            line localX = position.x - global "%uuid abilMenuOffX";
+            line localY = position.y - global "%uuid abilMenuOffY";
+
+
+            line connectionPanel = item("acacia_boat");
+            connectionPanel = connectionPanel.setModel("gray_stained_glass_pane");
+            connectionPanel = connectionPanel.setTooltipVisible(tooltip = "Disable");
+            print(abilityKey);
+            print(saved "%uuid abilities".contains(abilityKey));
+            if(saved "%uuid abilities".contains(abilityKey)) {
+                connectionPanel = connectionPanel.setModel("lime_stained_glass_pane");
+            } 
+
+            for(line dep of dependencies) {
+                line dependencyPos = ability[dep].position;
+                line dependencyLocalX = dependencyPos.x - global "%uuid abilMenuOffX";
+                line dependencyLocalY = dependencyPos.y - global "%uuid abilMenuOffY";
+                if((dependencyLocalY - localY) / (dependencyLocalY - localY).abs() != 0) {
+                    for(line ty of range(localY, dependencyLocalY, (dependencyLocalY - localY) / (dependencyLocalY - localY).abs())) {
+                        line tslot = (6 - ty) * 9 + localX;
+                        if(!inv.getItem(tslot).isTooltipVisible()) {
+                            inv.setItem(tslot, connectionPanel);
+                        }
+                        util.fastWait(1/500);
+                    }
+                }
+                if((dependencyLocalX - localX) / (dependencyLocalX - localX).abs() != 0) {
+                    for(line tx of range(localX, dependencyLocalX, (dependencyLocalX - localX) / (dependencyLocalX - localX).abs())) {
+                        line tslot = (6 - dependencyLocalY) * 9 + tx;
+                        if(!inv.getItem(tslot).isTooltipVisible()) {
+                            inv.setItem(tslot, connectionPanel);
+                        }
+                        util.fastWait(1/500);
+                    }
+                }
+                
+            }
+
+            if(localX >= 1 && localX <= 9 && localY >= 1 && localY <= 6) {
+                line slot = (6 - localY) * 9 + localX;
+                inv.setItem(slot, icon);
+            }
+
+            line upArrow = item("arrow");
+            upArrow = upArrow.setName(s"Up");
+            upArrow = upArrow.setTag("abil_up", 1);
+
+            inv.setItem(9, upArrow);
+
+            line downArrow = item("arrow");
+            downArrow = downArrow.setName(s"Down");
+            downArrow = downArrow.setTag("abil_down", 1);
+
+            inv.setItem(54, downArrow);
+        }
+
+        inv.openForSelection();
+    }
+    
+    function clickAbilIcon() {
+        if(event.item.hasTag("abil_up")) {
+            global "%uuid abilMenuOffY" += 3;
+            openMenu();
+            return;
+        }
+        if(event.item.hasTag("abil_down")) {
+            global "%uuid abilMenuOffY" -= 3;
+            openMenu();
+            return;
+        }
+
+        line unlockAbility = event.item.getTag("unlock_ability") as str;
+        if(namespace.has_member(ability, unlockAbility)) {
+            line cost = ability[unlockAbility].cost;
+            line dependencies = ability[unlockAbility].dependencies;
+
+            line has_dependencies = 1;
+            for(line dep of dependencies) {
+                if(!saved "%uuid abilities".contains(dep)) {
+                    has_dependencies = 0;
+                }
+            }
+
+            if(saved "%uuid logs" > cost && !saved "%uuid abilities".contains(unlockAbility)) {
+                saved "%uuid logs" -= cost;
+                saved "%uuid abilities".append(unlockAbility);
+                skilltree.openMenu();
+            }
+        }
+    }
 }

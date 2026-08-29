@@ -8,6 +8,44 @@ namespace treegens {
     small = "small";
     tiny = "tiny";
 
+    oak = "oak";
+    dark = "dark";
+    cherry = "cherry";
+    warped = "warped";
+
+    function growArbitraryTree(
+        idx: num
+    ): list[loc] {
+        line individualSize = [tiny, small, medium, big, mega][(idx % 5) + 1];
+        line treeType = [oak, dark, cherry, warped][(idx / 5) + 1];
+
+        if(treeType == oak) {
+            return treegens.buildOakTree(
+                global "%uuid roomPos",
+                individualSize
+            );
+        }
+        if(treeType == dark) {
+            return treegens.buildDarkTree(
+                global "%uuid roomPos",
+                individualSize
+            );
+        }
+        if(treeType == cherry) {
+            return treegens.buildCherryTree(
+                global "%uuid roomPos",
+                individualSize
+            );
+        }
+        if(treeType == warped) {
+            return treegens.buildWarpedTree(
+                global "%uuid roomPos",
+                individualSize
+            );
+        }
+        return [];
+    }
+
     process growForPlayer() {
         if(global "%uuid treeRegenerating" == 1) {
             endthread;
@@ -17,10 +55,7 @@ namespace treegens {
         wait(20);
 
         global "%uuid brokenLogs" = [];
-        declare global "%uuid blocksToBreak" = treegens.buildWarpedTree(
-            global "%uuid roomPos",
-            treegens.mega
-        );
+        declare global "%uuid blocksToBreak" = treegens.growArbitraryTree(global "%uuid stats"["tree_type"]);
         global "%uuid treeRegenerating" = 0;
     }
 

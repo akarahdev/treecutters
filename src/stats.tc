@@ -1,4 +1,5 @@
 import statShopIcon;
+import ability;
 
 namespace stats {
     function computeStats() {
@@ -13,9 +14,16 @@ namespace stats {
             line amount = statShopIcon[iconKey].amount;
             stats[stat] += amount * level;
         }
+        if(stats["jump_height"] >= 1) {
+            line jumpBoostEffect = pot("Jump Boost", stats["jump_height"], 100);
+            player.givePotionEffect(jumpBoostEffect, particles = "None", showIcon = "False");
+        }
 
-        line jumpBoostEffect = pot("Jump Boost", stats["jump_height"], 100);
-        player.givePotionEffect(jumpBoostEffect, particles = "None", showIcon = "False");
+        for(line abilKey of saved "%uuid abilities") {
+            for(line stat, line val of ability[abilKey].statBuffs) {
+                stats[stat] += val;
+            }
+        }
 
         global "%uuid stats" = stats;
     }

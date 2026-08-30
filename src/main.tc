@@ -61,8 +61,6 @@ playerevent join {
         global "%uuid roomPos".shiftAllAxes(24, 0, 24)
     );
     start treegens.growForPlayer();
-
-    player.setAllowFlight(allow = "Enable");
 }
 
 playerevent leave {
@@ -153,12 +151,22 @@ playerevent takeDamage {
     event.cancel();
 }
 
-playerevent startFlight {
-    event.cancel();
+playerevent movementKeyChange {
+    if(event.movementKeyEquals(action = "Just pressed", key = "Jump (Space)")) {
+        if(global "%uuid canDoubleJump" == 0) {
+            endthread;
+        }
+        
+        if(player.isGrounded()) {
+            endthread;
+        }
 
-    if(!saved "%uuid abilities".contains("double_jump")) {
-        endthread;
+        if(!saved "%uuid abilities".contains("double_jump")) {
+            endthread;
+        }
+        player.launchUp(global "%uuid stats"["jump_height"] + 1, addToCurrentVel = "False");
+        player.launchForward(9/5 * (global "%uuid stats"["jump_height"]) + 9/5, addToCurrentVel = "True");
+
+        declare global "%uuid canDoubleJump" = 0;
     }
-    player.launchUp(global "%uuid stats"["jump_height"] + 1, addToCurrentVel = "False");
-    player.launchForward(9/5 * (global "%uuid stats"["jump_height"]) + 9/5, addToCurrentVel = "True");
 }

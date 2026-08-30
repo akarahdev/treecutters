@@ -15,8 +15,8 @@ namespace statShopIcon.sweep {
     material = "iron_axe";
     name = "Sweep";
     stat = "sweep";
-    basePrice = 20;
-    priceScaling = 1.15;
+    basePrice = 15;
+    priceScaling = 1.125;
 }
 
 namespace statShopIcon.logFortune {
@@ -25,7 +25,7 @@ namespace statShopIcon.logFortune {
     stat = "fortune";
     amount = 0.06;
     basePrice = 15;
-    priceScaling = 1.15;
+    priceScaling = 1.9;
 }
 
 namespace statShopIcon.treeGrowthSpeed {
@@ -34,6 +34,7 @@ namespace statShopIcon.treeGrowthSpeed {
     stat = "tree_growth";
     amount = 1;
     basePrice = 30;
+    priceScaling = 1.7;
     maxLevel = 10;
 }
 

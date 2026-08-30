@@ -21,6 +21,10 @@ namespace loops {
 
             player.givePotionEffect(pot("Night Vision", 1, 100000), particles = "None", showIcon = "False");
         }
+
+        if(player.isGrounded()) {
+            global "%uuid canDoubleJump" = 1;
+        }
     }
 
     function updatePlayerInv() {
@@ -29,21 +33,48 @@ namespace loops {
         line basicLogs = (logs % 64);
         line enchLogs = ((logs / 64) % 64);
         line hyperEnchLogs = ((logs / 64 / 64) % 64);
+        line hyperEnch2Logs = ((logs / 64 / 64 / 64) % 64);
+        line hyperEnch3Logs = ((logs / 64 / 64 / 64 / 64) % 64);
 
         line basicLogItem = item("stripped_oak_wood", basicLogs);
         basicLogItem = basicLogItem.setName(s"");
         basicLogItem = basicLogItem.setTooltipVisible(tooltip = "Disable");
+
         line enchLogItem = item("stripped_oak_wood", enchLogs);
         enchLogItem = enchLogItem.setHiddenComponents("enchantments");
         enchLogItem = enchLogItem.addEnchant("sharpness", 1);
         enchLogItem = enchLogItem.setName(s"");
         enchLogItem = enchLogItem.setTooltipVisible(tooltip = "Disable");
+
         line hyperEnchLogItem = item("stripped_spruce_wood", hyperEnchLogs);
         hyperEnchLogItem = hyperEnchLogItem.setHiddenComponents("enchantments");
         hyperEnchLogItem = hyperEnchLogItem.addEnchant("sharpness", 1);
         hyperEnchLogItem = hyperEnchLogItem.setName(s"");
         hyperEnchLogItem = hyperEnchLogItem.setTooltipVisible(tooltip = "Disable");
+
+
+        line hyperEnch2LogItem = item("stripped_cherry_wood", hyperEnch2Logs);
+        hyperEnch2LogItem = hyperEnch2LogItem.setHiddenComponents("enchantments");
+        hyperEnch2LogItem = hyperEnch2LogItem.addEnchant("sharpness", 1);
+        hyperEnch2LogItem = hyperEnch2LogItem.setName(s"");
+        hyperEnch2LogItem = hyperEnch2LogItem.setTooltipVisible(tooltip = "Disable");
+
+
+        line hyperEnch3LogItem = item("stripped_warped_stem", hyperEnch3Logs);
+        hyperEnch3LogItem = hyperEnch3LogItem.setHiddenComponents("enchantments");
+        hyperEnch3LogItem = hyperEnch3LogItem.addEnchant("sharpness", 1);
+        hyperEnch3LogItem = hyperEnch3LogItem.setName(s"");
+        hyperEnch3LogItem = hyperEnch3LogItem.setTooltipVisible(tooltip = "Disable");
+
         line slot = 2;
+        if(hyperEnch3Logs > 1) {
+            player.setItemInSlot(hyperEnch3LogItem, slot);
+            slot++;
+        }
+        if(hyperEnch2Logs > 1) {
+            player.setItemInSlot(hyperEnch2LogItem, slot);
+            slot++;
+        }
         if(hyperEnchLogs > 1) {
             player.setItemInSlot(hyperEnchLogItem, slot);
             slot++;

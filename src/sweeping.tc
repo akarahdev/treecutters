@@ -141,13 +141,13 @@ namespace sweeping {
             return sweep;
         }
         if(mat == "stripped_spruce_wood") {
-            return getBlocksBroken(sweep, 7);
+            return getBlocksBroken(sweep, 6);
         }
         if(mat == "stripped_cherry_wood") {
-            return getBlocksBroken(sweep, 15);
+            return getBlocksBroken(sweep, 12);
         }
         if(mat == "stripped_warped_stem") {
-            return getBlocksBroken(sweep, 25);
+            return getBlocksBroken(sweep, 18);
         }
         return 1;
     }
@@ -157,13 +157,13 @@ namespace sweeping {
             return 1;
         }
         if(mat == "stripped_spruce_wood") {
-            return 3;
+            return 5;
         }
         if(mat == "stripped_cherry_wood") {
-            return 8;
+            return 40;
         }
         if(mat == "stripped_warped_stem") {
-            return 15;
+            return 320;
         }
     }
 }

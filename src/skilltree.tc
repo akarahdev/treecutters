@@ -34,7 +34,7 @@ namespace ability.small_oak {
     name = "Small Oak";
     cost = 20;
     description: list[str] = ["Upgrades your oak trees from tiny to small."];
-    position = vec(5, 8, 0);
+    position = vec(5, 6, 0);
     dependencies: list[str] = ["bonus_sweep_1"];
     statBuffs: dict[num] = {
         "tree_type": 1
@@ -54,17 +54,19 @@ namespace ability.jump_boost_1 {
     name = "Jump Boost 1";
     cost = 40;
     description: list[str] = ["Adds extra jump height."];
-    position = vec(5, 6, 0);
-    dependencies: list[str] = ["bonus_sweep_1"];
-    statBuffs: dict[num] = {};
+    position = vec(5, 8, 0);
+    dependencies: list[str] = ["small_oak"];
+    statBuffs: dict[num] = {
+        "jump_height": 1
+    };
 }
 
 namespace ability.medium_oak {
     name = "Medium Oak";
-    cost = 80;
+    cost = 60;
     description: list[str] = ["Upgrades your oak trees from small to medium."];
     position = vec(5, 10, 0);
-    dependencies: list[str] = ["jump_boost_1"];
+    dependencies: list[str] = ["small_oak"];
     statBuffs: dict[num] = {
         "tree_type": 1
     };
@@ -75,7 +77,7 @@ namespace ability.jump_boost_2 {
     cost = 100;
     description: list[str] = ["Adds +1 tier of jump boost."];
     position = vec(3, 8, 0);
-    dependencies: list[str] = ["jump_boost_1", "medium_oak"];
+    dependencies: list[str] = ["jump_boost_1"];
     statBuffs: dict[num] = {
         "jump_height": 1
     };
@@ -94,10 +96,197 @@ namespace ability.big_oak {
 
 namespace ability.mega_oak {
     name = "Mega Oak";
-    cost = 700;
-    description: list[str] = ["Upgrades your oak trees from big to mega."];
+    cost = 900;
+    description: list[str] = ["Upgrades your tree size from big to mega."];
     position = vec(5, 14, 0);
+    dependencies: list[str] = ["big_oak"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_darkwood {
+    name = "Tiny Darkwood";
+    cost = 1200;
+    description: list[str] = ["Upgrades your Oak trees to Darkwood,", "resetting size in the process."];
+    position = vec(5, 16, 0);
     dependencies: list[str] = ["mega_oak"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_darkwood {
+    name = "Small Darkwood";
+    cost = 1800;
+    description: list[str] = ["Upgrades your tree size from tiny to small."];
+    position = vec(5, 18, 0);
+    dependencies: list[str] = ["tiny_darkwood"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.jump_boost_3 {
+    name = "Jump Boost 3";
+    cost = 700;
+    description: list[str] = ["Grants +1 Jump Height."];
+    position = vec(2, 16, 0);
+    dependencies: list[str] = ["small_darkwood"];
+    statBuffs: dict[num] = {
+        "jump_height": 1
+    };
+}
+
+namespace ability.medium_darkwood {
+    name = "Medium Darkwood";
+    cost = 2300;
+    description: list[str] = ["Upgrades your tree size from small to medium."];
+    position = vec(5, 20, 0);
+    dependencies: list[str] = ["small_darkwood"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_darkwood {
+    name = "Big Darkwood";
+    cost = 3700;
+    description: list[str] = ["Upgrades your tree size from medium to big."];
+    position = vec(5, 22, 0);
+    dependencies: list[str] = ["medium_darkwood"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.jump_boost_4 {
+    name = "Jump Boost 4";
+    cost = 2100;
+    description: list[str] = ["Grants +1 Jump Height."];
+    position = vec(7, 22, 0);
+    dependencies: list[str] = ["big_darkwood"];
+    statBuffs: dict[num] = {
+        "jump_height": 1
+    };
+}
+
+namespace ability.mega_darkwood {
+    name = "Mega Darkwood";
+    cost = 5000;
+    description: list[str] = ["Upgrades your tree size from big to mega."];
+    position = vec(5, 24, 0);
+    dependencies: list[str] = ["big_darkwood"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_cherry {
+    name = "Tiny Cherry";
+    cost = 8000;
+    description: list[str] = ["Upgrades your tree type from Darkwood to Cherry,", "resetting size in the process."];
+    position = vec(5, 26, 0);
+    dependencies: list[str] = ["mega_darkwood"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_cherry {
+    name = "Small Cherry";
+    cost = 9000;
+    description: list[str] = ["Upgrades your tree size from tiny to small."];
+    position = vec(5, 28, 0);
+    dependencies: list[str] = ["tiny_cherry"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.medium_cherry {
+    name = "Medium Cherry";
+    cost = 11000;
+    description: list[str] = ["Upgrades your tree size from small to medium."];
+    position = vec(5, 30, 0);
+    dependencies: list[str] = ["small_cherry"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_cherry {
+    name = "Big Cherry";
+    cost = 17000;
+    description: list[str] = ["Upgrades your tree size from medium to big."];
+    position = vec(5, 32, 0);
+    dependencies: list[str] = ["medium_cherry"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_cherry {
+    name = "Mega Cherry";
+    cost = 35000;
+    description: list[str] = ["Upgrades your tree size from big to mega."];
+    position = vec(5, 34, 0);
+    dependencies: list[str] = ["big_cherry"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_warped {
+    name = "Tiny Warped";
+    cost = 110000;
+    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    position = vec(5, 36, 0);
+    dependencies: list[str] = ["mega_cherry"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_warped {
+    name = "Small Warped";
+    cost = 140000;
+    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    position = vec(5, 38, 0);
+    dependencies: list[str] = ["tiny_warped"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.medium_warped {
+    name = "Medium Warped";
+    cost = 180000;
+    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    position = vec(5, 40, 0);
+    dependencies: list[str] = ["small_warped"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_warped {
+    name = "Big Warped";
+    cost = 400000;
+    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    position = vec(5, 42, 0);
+    dependencies: list[str] = ["medium_warped"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_warped {
+    name = "Mega Warped";
+    cost = 800000;
+    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    position = vec(5, 44, 0);
+    dependencies: list[str] = ["big_warped"];
     statBuffs: dict[num] = {
         "tree_type": 1
     };
@@ -167,8 +356,6 @@ namespace skilltree {
             line connectionPanel = item("acacia_boat");
             connectionPanel = connectionPanel.setModel("gray_stained_glass_pane");
             connectionPanel = connectionPanel.setTooltipVisible(tooltip = "Disable");
-            print(abilityKey);
-            print(saved "%uuid abilities".contains(abilityKey));
             if(saved "%uuid abilities".contains(abilityKey)) {
                 connectionPanel = connectionPanel.setModel("lime_stained_glass_pane");
             } 

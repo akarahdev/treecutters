@@ -19,27 +19,33 @@ namespace treegens {
         line individualSize = [tiny, small, medium, big, mega][(idx % 5) + 1];
         line treeType = [oak, dark, cherry, warped][(idx / 5) + 1];
 
+        line pos = global "%uuid roomPos".shiftAllAxes(
+            num.random(-3, 3),
+            0,
+            num.random(-3, 3),
+        );
+
         if(treeType == oak) {
             return treegens.buildOakTree(
-                global "%uuid roomPos",
+                pos,
                 individualSize
             );
         }
         if(treeType == dark) {
             return treegens.buildDarkTree(
-                global "%uuid roomPos",
+                pos,
                 individualSize
             );
         }
         if(treeType == cherry) {
             return treegens.buildCherryTree(
-                global "%uuid roomPos",
+                pos,
                 individualSize
             );
         }
         if(treeType == warped) {
             return treegens.buildWarpedTree(
-                global "%uuid roomPos",
+                pos,
                 individualSize
             );
         }
@@ -224,6 +230,7 @@ namespace treegens {
             item("stripped_oak_wood")
         );
         outputPositions.removeDuplicates();
+        outputPositions.removeAir();
         return outputPositions;
     }
 
@@ -272,6 +279,7 @@ namespace treegens {
         );
 
         outputPositions.removeDuplicates();
+        outputPositions.removeAir();
         return outputPositions;
     }
 
@@ -301,6 +309,8 @@ namespace treegens {
             root.y += height / 4;
             root.x += dx;
             root.z += dz;
+
+            root = root.align();
         }
         
 
@@ -315,6 +325,7 @@ namespace treegens {
         );
 
         outputPositions.removeDuplicates();
+        outputPositions.removeAir();
         return outputPositions;
     }
 
@@ -362,7 +373,7 @@ namespace treegens {
             buildBranches(
                 outputPositions,
                 endcap,
-                height * 0.4,
+                height * 0.3,
                 branchReqs,
                 num.random(2, 4),
                 0,
@@ -371,6 +382,17 @@ namespace treegens {
         }
 
         outputPositions.removeDuplicates();
+        outputPositions.removeAir();
         return outputPositions;
+    }
+}
+
+extend list[loc] {
+    function removeAir(this: var[list[loc]]) {
+        for(line block of this) {
+            if(game.getBlockMaterial(block) == "air" || game.getBlockMaterial(block) == "light") {
+                this.removeValue(block);
+            }
+        }
     }
 }

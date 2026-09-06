@@ -5,10 +5,6 @@ playerevent join {
     declare saved "%uuid statShop": dict[num];
     declare global "%uuid stats": dict[num] = {};
 
-    if(!var.exists(saved "%uuid abilities")) {
-        saved "%uuid abilities" = [];
-    }
-
     global "%uuid treeRegenerating" = 0;
 
     player.setToSurvivalMode();
@@ -128,9 +124,6 @@ playerevent rightClick {
         if(player.getItemCooldown(player.mainHandItem) != 0) {
             endthread;
         }
-        if(!saved "%uuid abilities".contains("throwing_axe")) {
-            endthread;
-        }
         line p = player.eyeLocation;
         p.shiftInDirection(0.25);
         start throwingaxe.throw(p);
@@ -146,20 +139,14 @@ playerevent clickInventorySlot {
 }
 
 import statShop;
-import skilltree;
 
 playerevent swapHands {
     event.cancel();
-    if(player.isSneaking()) {
-        skilltree.openMenu();
-    } else {
-        statShop.openMenu();
-    }
+    statShop.openMenu();
 }
 
 playerevent clickMenuSlot {
     statShop.clickStatShopIcon();
-    skilltree.clickAbilIcon();
 }
 
 playerevent takeDamage {
@@ -176,9 +163,6 @@ playerevent movementKeyChange {
             endthread;
         }
 
-        if(!saved "%uuid abilities".contains("double_jump")) {
-            endthread;
-        }
         player.launchUp(global "%uuid stats"["jump_height"] + 1, addToCurrentVel = "False");
         player.launchForward(9/5 * (global "%uuid stats"["jump_height"]) + 9/5, addToCurrentVel = "True");
 

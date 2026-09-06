@@ -1,5 +1,4 @@
 import statShopIcon;
-import ability;
 
 namespace stats {
     function computeStats() {
@@ -13,13 +12,6 @@ namespace stats {
             line stat = statShopIcon[iconKey].stat;
             line amount = statShopIcon[iconKey].amount;
             stats[stat] += amount * level;
-        }
-       
-
-        for(line abilKey of saved "%uuid abilities") {
-            for(line stat, line val of ability[abilKey].statBuffs) {
-                stats[stat] += val;
-            }
         }
 
         if(stats["jump_height"] >= 1) {

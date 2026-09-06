@@ -8,4 +8,24 @@ namespace util {
             wait(1);
         }
     }
+
+    function numberFormat(value: num): str {
+        if(value > 1000000000000) {
+            line divd = num.floor(value / 10000000000) / 100;
+            return "%var(divd)T";
+        }
+        if(value > 1000000000) {
+            line divd = num.floor(value / 10000000) / 100;
+            return "%var(divd)B";
+        }
+        if(value > 1000000) {
+            line divd = num.floor(value / 10000) / 100;
+            return "%var(divd)M";
+        }
+        if(value > 1000) {
+            line divd = num.floor(value / 10) / 100;
+            return "%var(divd)K";
+        }
+        return str.setToString(num.floor(value));
+    }
 }

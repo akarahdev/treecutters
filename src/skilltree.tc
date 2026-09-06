@@ -294,7 +294,7 @@ namespace ability.mega_warped {
 
 namespace ability.tiny_molten {
     name = "Tiny Molten";
-    cost = 1100000;
+    cost = 1000000;
     description: list[str] = ["Upgrades your tree type from Warped to Molten,", "resetting size in the process."];
     position = vec(5, 46, 0);
     dependencies: list[str] = ["mega_warped"];
@@ -316,7 +316,7 @@ namespace ability.small_molten {
 
 namespace ability.medium_molten {
     name = "Medium Molten";
-    cost = 1700000;
+    cost = 2400000;
     description: list[str] = ["Upgrades your tree size from small to medium."];
     position = vec(5, 50, 0);
     dependencies: list[str] = ["small_molten"];
@@ -327,7 +327,7 @@ namespace ability.medium_molten {
 
 namespace ability.big_molten {
     name = "Big Molten";
-    cost = 2400000;
+    cost = 3100000;
     description: list[str] = ["Upgrades your tree size from medium to big."];
     position = vec(5, 52, 0);
     dependencies: list[str] = ["medium_molten"];
@@ -338,10 +338,171 @@ namespace ability.big_molten {
 
 namespace ability.mega_molten {
     name = "Mega Molten";
-    cost = 3600000;
+    cost = 3900000;
     description: list[str] = ["Upgrades your tree size from big to mega."];
     position = vec(5, 54, 0);
     dependencies: list[str] = ["big_molten"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_aerial {
+    name = "Tiny Aerial";
+    cost = 4700000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 56, 0);
+    dependencies: list[str] = ["mega_molten"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_aerial {
+    name = "Small Aerial";
+    cost = 6300000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 58, 0);
+    dependencies: list[str] = ["tiny_aerial"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.medium_aerial {
+    name = "Medium Aerial";
+    cost = 8400000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 60, 0);
+    dependencies: list[str] = ["small_aerial"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_aerial {
+    name = "Big Aerial";
+    cost = 11_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 62, 0);
+    dependencies: list[str] = ["medium_aerial"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_aerial {
+    name = "Mega Aerial";
+    cost = 14_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 64, 0);
+    dependencies: list[str] = ["big_aerial"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_lunar {
+    name = "Tiny Lunar";
+    cost = 28_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 66, 0);
+    dependencies: list[str] = ["mega_aerial"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_lunar {
+    name = "Small Lunar";
+    cost = 20_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 68, 0);
+    dependencies: list[str] = ["tiny_lunar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.medium_lunar {
+    name = "Medium Lunar";
+    cost = 35_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 70, 0);
+    dependencies: list[str] = ["small_lunar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_lunar {
+    name = "Big Lunar";
+    cost = 65_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 72, 0);
+    dependencies: list[str] = ["medium_lunar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_lunar {
+    name = "Mega Lunar";
+    cost = 140_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 74, 0);
+    dependencies: list[str] = ["big_lunar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_solar {
+    name = "Tiny Solar";
+    cost = 170_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 76, 0);
+    dependencies: list[str] = ["mega_lunar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+namespace ability.medium_solar {
+    name = "Medium Solar";
+    cost = 210_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 78, 0);
+    dependencies: list[str] = ["tiny_solar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+namespace ability.large_solar {
+    name = "Large Solar";
+    cost = 340_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 80, 0);
+    dependencies: list[str] = ["medium_solar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+namespace ability.big_solar {
+    name = "Big Solar";
+    cost = 520_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 82, 0);
+    dependencies: list[str] = ["large_solar"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+namespace ability.mega_solar {
+    name = "Mega Solar";
+    cost = 680_000_000;
+    description: list[str] = ["Upgrades your tree type from Molten to Aerial,", "resetting size in the process."];
+    position = vec(5, 84, 0);
+    dependencies: list[str] = ["big_solar"];
     statBuffs: dict[num] = {
         "tree_type": 1
     };
@@ -399,7 +560,8 @@ namespace skilltree {
                 }
                 icon = icon.addLore(s"");
             }
-            icon = icon.addLore(s"<gray>Cost: <green>%var(cost) Logs");
+            line costFmt = util.numberFormat(cost);
+            icon = icon.addLore(s"<gray>Cost: <green>%var(costFmt) Logs");
             icon = icon.addLore(s"");
             icon = icon.addLore(s"<yellow>Click to upgrade!");
             icon = icon.setTag("unlock_ability", abilityKey);

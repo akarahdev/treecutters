@@ -51,11 +51,6 @@ playerevent join {
         loc(0, 6, 0),
         global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
     );
-    game.setRegion(
-        "light" as item,
-        global "%uuid roomPos".shiftAllAxes(-24, 0, -24),
-        global "%uuid roomPos".shiftAllAxes(24, 0, 24)
-    );
     start treegens.growForPlayer();
 }
 
@@ -66,16 +61,31 @@ playerevent leave {
 import loops;
 
 gameevent startup {
+    startup();
+}
+
+function startup() {
     declare global woodTypeList: list[item] = [
         item("stripped_oak_wood"),
         item("stripped_spruce_wood"),
         item("stripped_cherry_wood"),
         item("stripped_warped_stem"),
-        item("stripped_crimson_stem")
+        item("stripped_crimson_stem"),
+        item("stripped_pale_oak_wood"),
+        item("pale_oak_wood"),
+        item("stripped_birch_wood")
     ];
 
     declare global roomPositions: list[loc] = [];
 
+    setupPositions();
+
+    print(roomPositions.len());
+
+    start loops.executePlayerLoops();
+}
+
+function setupPositions() {
     line relativePositions: list[vec] = [
         vec(25, 0, 25),
         vec(25, 0, 75),
@@ -89,10 +99,6 @@ gameevent startup {
             roomPositions.append(newLoc);
         }
     }
-
-    print(roomPositions.len());
-
-    start loops.executePlayerLoops();
 }
 
 import treegens;
@@ -177,5 +183,16 @@ playerevent movementKeyChange {
         player.launchForward(9/5 * (global "%uuid stats"["jump_height"]) + 9/5, addToCurrentVel = "True");
 
         declare global "%uuid canDoubleJump" = 0;
+    }
+}
+
+playerevent command {
+    if(event.commandArgumentEquals("grant_logs", 1) && player.hasPlotPermission(permission = "Owner")) {
+        line playerName = event.commandArguments[2];
+        line amount = num.parse(event.commandArguments[3]);
+        select playersByName(playerName);
+        saved "%uuid logs" += amount;
+        select reset;
+        player.sendMessage(s"Sent %var(playerName) %var(amount) logs");
     }
 }

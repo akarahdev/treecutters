@@ -39,6 +39,7 @@ namespace statShopIcon.treeGrowthSpeed {
 }
 
 import statShopIcon;
+import util;
 
 namespace statShop {
     function openMenu() {
@@ -61,12 +62,13 @@ namespace statShop {
                 cost = priceBrackets[level + 1];
             }
 
+            line costFmt = util.numberFormat(cost);
             line icon = item("acacia_boat");
             icon = icon.setModel(material);
             icon = icon.setName(s"<green>%var(name)");
             icon = icon.addLore(s"<dark_gray>Level %var(level)");
             icon = icon.addLore(s"");
-            icon = icon.addLore(s"<gray>Costs <green>%var(cost) <gray>logs to upgrade.");
+            icon = icon.addLore(s"<gray>Costs <green>%var(costFmt) <gray>logs to upgrade.");
             icon = icon.addLore(s"");
             icon = icon.addLore(s"<yellow>Click to upgrade!");
             icon = icon.setTag("upgrade", iconKey);

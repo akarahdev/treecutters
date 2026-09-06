@@ -1,4 +1,5 @@
 import treegens;
+import util;
 
 namespace sweeping {
     function getBlocksBroken(
@@ -64,9 +65,11 @@ namespace sweeping {
     ): num {
         line flat = blocks.flatten();
         flat.removeDuplicates();
+
+        line blocksPerTick =  (flat.len() / 10);
         for(line block of flat) {
             safeBreak(block);
-            wait(2);
+            util.fastWait(1/blocksPerTick);
         }
     }
 
@@ -185,6 +188,15 @@ namespace sweeping {
         if(mat == "stripped_crimson_stem") {
             return getBlocksBroken(sweep, 24);
         }
+        if(mat == "stripped_pale_oak_wood") {
+            return getBlocksBroken(sweep, 30);
+        }
+        if(mat == "pale_oak_wood") {
+            return getBlocksBroken(sweep, 36);
+        }
+        if(mat == "stripped_birch_wood") {
+            return getBlocksBroken(sweep, 42);
+        }
         return 1;
     }
 
@@ -202,7 +214,17 @@ namespace sweeping {
             return 320;
         }
         if(mat == "stripped_crimson_stem") {
-            return 900;
+            return 1600;
         }
+        if(mat == "stripped_pale_oak_wood") {
+            return 5900;
+        }
+        if(mat == "pale_oak_wood") {
+            return 28000;
+        }
+        if(mat == "stripped_birch_wood") {
+            return 190000;
+        }
+        return 1;
     }
 }

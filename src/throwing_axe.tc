@@ -69,7 +69,7 @@ namespace throwingaxe {
         entity.remove();
         select reset;
 
-        pos = pos.align();
+        pos = pos.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
 
         execBreak(pos);
     }
@@ -108,7 +108,7 @@ namespace throwingaxe {
         pos: loc
     ) {
         for(line adj of adjacent(pos, pattern = "Cube (26 blocks)", includeOrigin = "True")) {
-            adj = adj.align();
+            adj = adj.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
             line mat = game.getBlockMaterial(adj);
             if(!(str.setToString(global woodTypeList).contains(mat))) {
                 continue;

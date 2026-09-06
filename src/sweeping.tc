@@ -73,12 +73,13 @@ namespace sweeping {
     function safeBreak(
         block: loc
     ) {
+        block = block.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
         if(global "%uuid treeRegenerating" == 1) {
             event.cancel();
             return;
         }
         line mat = game.getBlockMaterial(block);
-        if(mat != "air" && !global "%uuid brokenLogs".contains(block)) {
+        if(mat != "air" && mat != "light" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
             saved "%uuid logs" += logMod(mat) * (global "%uuid stats"["fortune"] + 1);
         }
@@ -89,8 +90,9 @@ namespace sweeping {
         line brokenSoFar = global "%uuid brokenLogs".len();
         line brokenReq = global "%uuid blocksToBreak".len();
         if(
-            brokenSoFar / brokenReq > 0.9
+            brokenSoFar / brokenReq >= 0.9
         ) {
+            start treeClearAnim(block);
             for(line block2 of global "%uuid blocksToBreak") {
                 line mat2 = game.getBlockMaterial(block2);
                 if(mat2 != "air" && !global "%uuid brokenLogs".contains(block2)) {
@@ -104,11 +106,42 @@ namespace sweeping {
         }
     }
 
+    process treeClearAnim(
+        pos: loc
+    ) {
+        line pitch = -90;
+        if(default.eyeLocation.y > pos.y) {
+            pitch = 90;
+        }
+        pos = pos.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
+        game.spawnTextDisplay(pos, s"☐");
+        line disp = lastEntity.uuid;
+
+        allPlayers.setEntityHidden(disp);
+        default.setEntityHidden(disp, hidden = "Disable");
+
+        select entitiesByName(disp);
+        selectedEntity.setDisplayRotationFromEulerAngles(pitch, 0, 0);
+        selectedEntity.setDisplayBillboard("type" = "Fixed");
+        selectedEntity.setTextDisplayBackground("#000000", 0);
+        for(line idx of range(0, 100, 10)) {
+            selectedEntity.setDisplayInterpolation(1, 0);
+            selectedEntity.setTextDisplayTextOpacity((100 - idx) / 2);
+            selectedEntity.setDisplayScale(idx * 2, idx * 2, idx * 2);
+            line translation = vec(-0.02, 0, -0.13).multiply(idx * 2);
+            selectedEntity.setDisplayTranslation(translation);
+            wait(1);
+        }
+        selectedEntity.remove();
+        select reset;
+
+    }
+
     process blockFallAnim(
         block: loc,
         mat: str
     ) {
-        block = block.align();
+        block = block.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
         game.spawnItemDisplay(block, item(mat));
         line uuid = lastEntity.uuid;
 

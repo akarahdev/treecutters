@@ -22,7 +22,7 @@ namespace treegens {
 
         line pos = global "%uuid roomPos".shiftAllAxes(
             num.random(-3, 3),
-            0,
+            2,
             num.random(-3, 3),
         );
 
@@ -69,6 +69,7 @@ namespace treegens {
 
         global "%uuid brokenLogs" = [];
         declare global "%uuid blocksToBreak" = treegens.growArbitraryTree(global "%uuid stats"["tree_type"]);
+        player.playSound(snd("Creaking Attack"));
         global "%uuid treeRegenerating" = 0;
     }
 
@@ -171,6 +172,7 @@ namespace treegens {
 
             line pathPos: loc;
             for(pathPos of path(root, targetLoc, 0.25)) {
+                pathPos = pathPos.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
                 line placed = 0;
                 if(game.getBlockMaterial(pathPos) == "air") {
                     placed = 1;
@@ -178,7 +180,7 @@ namespace treegens {
                 game.setBlock(mat, pathPos);
                 allPlayers.playSound(snd("Wood Place"), pathPos);
                 if(placed == 1) {
-                    outputPositions.append(pathPos.align());
+                    outputPositions.append(pathPos);
                     util.fastWait(1/(global "%uuid stats"["tree_growth"]));
                 }
             }
@@ -197,6 +199,7 @@ namespace treegens {
         for(line i of range(0, height)) {
             for(line offset of logPositions) {
                 line added = root.shiftOnVector(offset);
+                added = added.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
                 game.setBlock(mat, added);
                 allPlayers.playSound(snd("Wood Place"), added);
                 outputPositions.append(added);
@@ -317,7 +320,7 @@ namespace treegens {
             root.x += dx;
             root.z += dz;
 
-            root = root.align();
+            root = root.align(align = "Block center", rotation = "Remove rotation", coords = "All coordinates");
         }
         
 

@@ -42,18 +42,14 @@ playerevent join {
     }
 
     player.teleport(
-        (global "%uuid roomPos").shiftAllAxes(-6, 0, -6)
+        (global "%uuid roomPos").shiftAllAxes(-6, 2, -6)
     );
 
-    game.setRegion(
-        "dirt" as item,
+    game.cloneRegion(
+        loc(0, 6, 0),
+        loc(50, 37, 50),
+        loc(0, 6, 0),
         global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
-        global "%uuid roomPos".shiftAllAxes(25, 31, 25)
-    );
-    game.setRegion(
-        "air" as item,
-        global "%uuid roomPos".shiftAllAxes(-24, 0, -24),
-        global "%uuid roomPos".shiftAllAxes(24, 30, 24)
     );
     game.setRegion(
         "light" as item,
@@ -78,12 +74,24 @@ gameevent startup {
         item("stripped_crimson_stem")
     ];
 
-    declare global roomPositions: list[loc] = [
-        loc(25, 50, 25),
-        loc(25, 50, 75),
-        loc(75, 50, 25),
-        loc(75, 50, 75)
+    declare global roomPositions: list[loc] = [];
+
+    line relativePositions: list[vec] = [
+        vec(25, 0, 25),
+        vec(25, 0, 75),
+        vec(75, 0, 25),
+        vec(75, 0, 75)
     ];
+    for(line y of range(35, 250-31, 31)) {
+        line baseLoc = loc(0, y, 0);
+        for(line subvec of relativePositions) {
+            line newLoc = baseLoc.shiftOnVector(subvec);
+            roomPositions.append(newLoc);
+        }
+    }
+
+    print(roomPositions.len());
+
     start loops.executePlayerLoops();
 }
 

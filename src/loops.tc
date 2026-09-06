@@ -11,7 +11,11 @@ namespace loops {
     }
     
     process playerLoop() {
-        player.sendActionBar(s"<dark_green>╟ <green>%var(%uuid logs) Logs");
+        line brokenSoFar = global "%uuid brokenLogs".len();
+        line brokenReq = global "%uuid blocksToBreak".len();
+        line totalPerc = ((brokenSoFar / (brokenReq * 0.9)) * 100).round().min(100);
+
+        player.sendActionBar(s"<dark_green>╟ <green>%var(%uuid logs) Logs <dark_gray>| <gray>%var(totalPerc)%");
         player.setSaturationLevel(20);
         player.setFoodLevel(20);
 

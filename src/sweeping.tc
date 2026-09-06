@@ -8,9 +8,9 @@ namespace sweeping {
         if(toughness <= 0) {
             return sweep;
         }
-        return 4 * num.log(
+        return 4 * num.root(
             1 + ((sweep + num.root(sweep) - toughness) / toughness.exponent(0.511)).exponent(1.9),
-            10
+            2.9
         );
     }
 
@@ -149,6 +149,9 @@ namespace sweeping {
         if(mat == "stripped_warped_stem") {
             return getBlocksBroken(sweep, 18);
         }
+        if(mat == "stripped_crimson_stem") {
+            return getBlocksBroken(sweep, 24);
+        }
         return 1;
     }
 
@@ -164,6 +167,9 @@ namespace sweeping {
         }
         if(mat == "stripped_warped_stem") {
             return 320;
+        }
+        if(mat == "stripped_crimson_stem") {
+            return 900;
         }
     }
 }

@@ -74,7 +74,8 @@ gameevent startup {
         item("stripped_oak_wood"),
         item("stripped_spruce_wood"),
         item("stripped_cherry_wood"),
-        item("stripped_warped_stem")
+        item("stripped_warped_stem"),
+        item("stripped_crimson_stem")
     ];
 
     declare global roomPositions: list[loc] = [

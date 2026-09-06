@@ -12,12 +12,13 @@ namespace treegens {
     dark = "dark";
     cherry = "cherry";
     warped = "warped";
+    molten = "molten";
 
     function growArbitraryTree(
         idx: num
     ): list[loc] {
         line individualSize = [tiny, small, medium, big, mega][(idx % 5) + 1];
-        line treeType = [oak, dark, cherry, warped][(idx / 5) + 1];
+        line treeType = [oak, dark, cherry, warped, molten][(idx / 5) + 1];
 
         line pos = global "%uuid roomPos".shiftAllAxes(
             num.random(-3, 3),
@@ -45,6 +46,12 @@ namespace treegens {
         }
         if(treeType == warped) {
             return treegens.buildWarpedTree(
+                pos,
+                individualSize
+            );
+        }
+        if(treeType == molten) {
+            return treegens.buildMoltenTree(
                 pos,
                 individualSize
             );
@@ -383,6 +390,48 @@ namespace treegens {
 
         outputPositions.removeDuplicates();
         outputPositions.removeAir();
+        return outputPositions;
+    }
+
+
+
+
+    function buildMoltenTree(
+        root: loc,
+        size: str
+    ): list[loc] {
+        line svars = sizeVariables(size);
+        line logPositions = svars[1];
+        line height = svars[2];
+        line branchReqs = svars[3];
+        line outputPositions: list[loc] = [];
+
+        buildTrunk(
+            outputPositions,
+            root,
+            height,
+            logPositions,
+            item("stripped_crimson_stem")
+        );
+
+        line root2 = root;
+        for(line x of range(0, height, 3)) {
+            root2.y += 3;
+            buildBranches(
+                outputPositions,
+                root2,
+                height * 0.7,
+                branchReqs,
+                num.random(-1, -3),
+                0,
+                item("stripped_crimson_stem")
+            );
+        }
+
+        outputPositions.removeDuplicates();
+        outputPositions.removeAir();
+         
+        
         return outputPositions;
     }
 }

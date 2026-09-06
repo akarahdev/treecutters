@@ -251,7 +251,7 @@ namespace ability.tiny_warped {
 namespace ability.small_warped {
     name = "Small Warped";
     cost = 140000;
-    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    description: list[str] = ["Upgrades your tree size from tiny to small."];
     position = vec(5, 38, 0);
     dependencies: list[str] = ["tiny_warped"];
     statBuffs: dict[num] = {
@@ -262,7 +262,7 @@ namespace ability.small_warped {
 namespace ability.medium_warped {
     name = "Medium Warped";
     cost = 180000;
-    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    description: list[str] = ["Upgrades your tree size from small to medium."];
     position = vec(5, 40, 0);
     dependencies: list[str] = ["small_warped"];
     statBuffs: dict[num] = {
@@ -273,7 +273,7 @@ namespace ability.medium_warped {
 namespace ability.big_warped {
     name = "Big Warped";
     cost = 400000;
-    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    description: list[str] = ["Upgrades your tree size from medium to big."];
     position = vec(5, 42, 0);
     dependencies: list[str] = ["medium_warped"];
     statBuffs: dict[num] = {
@@ -284,9 +284,64 @@ namespace ability.big_warped {
 namespace ability.mega_warped {
     name = "Mega Warped";
     cost = 800000;
-    description: list[str] = ["Upgrades your tree type from Cherry to Warped,", "resetting size in the process."];
+    description: list[str] = ["Upgrades your tree size from big to mega."];
     position = vec(5, 44, 0);
     dependencies: list[str] = ["big_warped"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.tiny_molten {
+    name = "Tiny Molten";
+    cost = 1100000;
+    description: list[str] = ["Upgrades your tree type from Warped to Molten,", "resetting size in the process."];
+    position = vec(5, 46, 0);
+    dependencies: list[str] = ["mega_warped"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.small_molten {
+    name = "Small Molten";
+    cost = 1400000;
+    description: list[str] = ["Upgrades your tree size from tiny to small."];
+    position = vec(5, 48, 0);
+    dependencies: list[str] = ["tiny_molten"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.medium_molten {
+    name = "Medium Molten";
+    cost = 1700000;
+    description: list[str] = ["Upgrades your tree size from small to medium."];
+    position = vec(5, 50, 0);
+    dependencies: list[str] = ["small_molten"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.big_molten {
+    name = "Big Molten";
+    cost = 2400000;
+    description: list[str] = ["Upgrades your tree size from medium to big."];
+    position = vec(5, 52, 0);
+    dependencies: list[str] = ["medium_molten"];
+    statBuffs: dict[num] = {
+        "tree_type": 1
+    };
+}
+
+namespace ability.mega_molten {
+    name = "Mega Molten";
+    cost = 3600000;
+    description: list[str] = ["Upgrades your tree size from big to mega."];
+    position = vec(5, 54, 0);
+    dependencies: list[str] = ["big_molten"];
     statBuffs: dict[num] = {
         "tree_type": 1
     };

@@ -1,25 +1,35 @@
 import treegens;
 import util;
 
-namespace sweeping {
-    function getBlocksBroken(
-        sweep: num,
-        toughness: num
-    ): num {
-        if(toughness <= 0) {
-            return sweep;
-        }
-        return 4 * num.root(
-            1 + ((sweep + num.root(sweep) - toughness) / toughness.exponent(0.511)).exponent(1.9),
-            2.9
-        );
+type log_family: {
+    value: num,
+    toughness: num, 
+};
+
+extend log_family {
+    function constructor(value: num, toughness: num): log_family {
+        return { value: value, toughness: toughness } as log_family;
     }
+}
+
+namespace sweeping {
 
     function getBlockOrders(
+        tier: num,
         origin: loc,
         maxBlocks: num
     ): list[list[loc]] {
-        maxBlocks = sweepMod(maxBlocks, game.getBlockMaterial(origin));
+        line logFamily = global log_families[num.floor(tier / 5) + 1];
+        maxBlocks = maxBlocks - logFamily["toughness"];
+        if(maxBlocks > 8) {
+            maxBlocks = 8 + ((maxBlocks - 8) * 0.5);
+        }
+        if(maxBlocks > 16) {
+            maxBlocks = 16 + ((maxBlocks - 16) * 0.5);
+        }
+        if(maxBlocks > 32) {
+            maxBlocks = 32 + ((maxBlocks - 32) * 0.5);
+        }
 
         line breakQueue: list[list[loc]] = [];
         line currentBlockList: list[loc] = [origin];
@@ -81,10 +91,11 @@ namespace sweeping {
             event.cancel();
             return;
         }
+        line logValue = log_families[num.floor(global "%uuid stats"["tree_type"]/5)+1]["value"];
         line mat = game.getBlockMaterial(block);
         if(mat != "air" && mat != "light" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
-            saved "%uuid logs" += logMod(mat) * (global "%uuid stats"["fortune"] + 1);
+            saved "%uuid logs" += logValue * (global "%uuid stats"["fortune"] + 1);
         }
         game.breakBlock(block);
         
@@ -100,7 +111,7 @@ namespace sweeping {
                 line mat2 = game.getBlockMaterial(block2);
                 if(mat2 != "air" && !global "%uuid brokenLogs".contains(block2)) {
                     global "%uuid brokenLogs".append(block2);
-                    saved "%uuid logs" += logMod(mat) * (global "%uuid stats"["fortune"] + 1);
+                    saved "%uuid logs" += logValue * (global "%uuid stats"["fortune"] + 1);
                     start blockFallAnim(block2, mat);
                 }
                 game.breakBlock(block2);
@@ -170,61 +181,17 @@ namespace sweeping {
         select reset;
     }
 
-
-
-    function sweepMod(sweep: num, mat: str): num {
-        if(mat == "stripped_oak_wood") {
-            return sweep;
-        }
-        if(mat == "stripped_spruce_wood") {
-            return getBlocksBroken(sweep, 6);
-        }
-        if(mat == "stripped_cherry_wood") {
-            return getBlocksBroken(sweep, 12);
-        }
-        if(mat == "stripped_warped_stem") {
-            return getBlocksBroken(sweep, 18);
-        }
-        if(mat == "stripped_crimson_stem") {
-            return getBlocksBroken(sweep, 24);
-        }
-        if(mat == "stripped_pale_oak_wood") {
-            return getBlocksBroken(sweep, 30);
-        }
-        if(mat == "pale_oak_wood") {
-            return getBlocksBroken(sweep, 36);
-        }
-        if(mat == "stripped_birch_wood") {
-            return getBlocksBroken(sweep, 42);
-        }
-        return 1;
-    }
-
-    function logMod(mat: str): num {
-        if(mat == "stripped_oak_wood") {
-            return 1;
-        }
-        if(mat == "stripped_spruce_wood") {
-            return 5;
-        }
-        if(mat == "stripped_cherry_wood") {
-            return 40;
-        }
-        if(mat == "stripped_warped_stem") {
-            return 320;
-        }
-        if(mat == "stripped_crimson_stem") {
-            return 1600;
-        }
-        if(mat == "stripped_pale_oak_wood") {
-            return 5900;
-        }
-        if(mat == "pale_oak_wood") {
-            return 28000;
-        }
-        if(mat == "stripped_birch_wood") {
-            return 190000;
-        }
-        return 1;
+    function logCap(tier: num): num {
+        return [
+            2000,
+            6000,
+            18000,
+            30000,
+            45000,
+            70000,
+            120000,
+            170000,
+            240000
+        ][num.min(num.floor(tier/5),7)+1];
     }
 }

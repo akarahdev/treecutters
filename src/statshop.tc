@@ -6,7 +6,9 @@ namespace statShopIcon {
         basePrice: num = 0;
         amount: num = 1;
         priceScaling: num = 1.15;
-        maxLevel: num = 50000000;
+        prestigeEvery: num = -1;
+        polynomialPrice: list[num] = [];
+        maxLevel: num = 50;
         priceBrackets: list[num] = [];
     };
 }
@@ -16,7 +18,8 @@ namespace statShopIcon.sweep {
     name = "Sweep";
     stat = "sweep";
     basePrice = 15;
-    priceScaling = 1.125;
+    priceScaling = 1.15;
+    maxLevel = 100;
 }
 
 namespace statShopIcon.logFortune {
@@ -42,8 +45,8 @@ namespace statShopIcon.jumpHeight {
     name = "Jump Height";
     stat = "jump_height";
     amount = 1;
-    basePrice = 300;
-    priceScaling = 2.5;
+    basePrice = 100;
+    priceScaling = 1.5;
     maxLevel = 4;
 }
 
@@ -51,22 +54,15 @@ namespace statShopIcon.treeType {
     material = "jungle_sapling";
     name = "Tree Type";
     stat = "tree_type";
+    prestigeEvery = 5;
     amount = 1;
-    priceBrackets: list[num] = [
-        20, 60, 300, 900, 
-        1200, 1800, 2300, 3700, 5000,
-        8000, 9000, 11000, 17000, 35000,
-        110000, 140000, 180000, 400000, 800000, 
-        1_000_000,  1_400_000, 2_400_000, 3_100_000, 3_900_000, 
-        4_700_000,  6_300_000, 8_400_000, 11_000_000, 14_000_000, 
-        28_000_000,  20_000_000, 35_000_000, 65_000_000, 140_000_000,
-        170_000_000, 210_000_000, 340_000_000, 520_000_000, 680_000_000,
-        -1
-    ];
+    // auto-generated via desmos: https://www.desmos.com/calculator/kuar1urjyj
+    priceBrackets: list[num] = [45,196,537,962,1561,530,1918,4247,7358,10066,1201,7154,18240,31940,21522,5737,37957,90904,200360,283614,13340,89578,177610,397140,424958,36476,201036,461234,866315,228842,54916,269127,561050,1144020,768148,151444,757708,1937108];
 }
 
 import statShopIcon;
 import util;
+import treegens;
 
 namespace statShop {
     function openMenu() {
@@ -83,13 +79,26 @@ namespace statShop {
 
             line level = saved "%uuid statShop"[iconKey];
 
-
             line priceBrackets = statShopIcon[iconKey].priceBrackets;
             if(!priceBrackets.sizeEquals(0)) {
                 cost = priceBrackets[level + 1];
             }
 
-            if(level >= statShopIcon[iconKey].maxLevel || (level >= priceBrackets.len() && priceBrackets.len() != 0)) {
+            line polynomialPrice = statShopIcon[iconKey].polynomialPrice;
+            if(!polynomialPrice.sizeEquals(0)) {
+                cost = 0;
+                line exponent: num = 0;
+                for(line poly of polynomialPrice.reverse() as list[num]) {
+                    cost += (poly * (level + 1).exponent(exponent));
+                    exponent += 1;
+                }
+            }
+            line prestigePoint = statShopIcon[iconKey].prestigeEvery;
+
+            if(
+                level >= statShopIcon[iconKey].maxLevel 
+                || (level >= priceBrackets.len() && priceBrackets.len() != 0)
+            ) {
                 cost = -1;
             }
 
@@ -98,6 +107,13 @@ namespace statShop {
             icon = icon.setModel(material);
             icon = icon.setName(s"<green>%var(name)");
             icon = icon.addLore(s"<dark_gray>Level %var(level)");
+            if(prestigePoint != -1 && cost != -1 && ((level + 1) % prestigePoint == 0)) {
+                icon = icon.addLore(s"");
+                icon = icon.addLore(s"<green><bold>PRESTIGE!");
+                icon = icon.addLore(s"<gray>Buying this upgrade will <red>reset");
+                icon = icon.addLore(s"<gray>your current logs.");
+                icon = icon.setTag("prestige", 1);
+            }
             if(cost != -1) {
                 icon = icon.addLore(s"");
                 icon = icon.addLore(s"<gray>Costs <green>%var(costFmt) <gray>logs to upgrade.");
@@ -129,8 +145,25 @@ namespace statShop {
                 saved "%uuid logs" -= cost;
                 saved "%uuid statShop"[iconKey] += 1;
             }
+            if(event.clickedSlotItem.hasTag("prestige")) {
+                saved "%uuid logs" = 0;
+            }
 
             openMenu();
+
+            if(iconKey == "treeType") {
+                while(global "%uuid treeRegenerating" == 1) {
+                    wait();
+                }
+                game.cloneRegion(
+                    loc(0, 6, 0),
+                    loc(50, 37, 50),
+                    loc(0, 6, 0),
+                    global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
+                );
+                start treegens.growForPlayer();
+            }
+
         }
     }
 }

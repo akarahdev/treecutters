@@ -41,13 +41,31 @@ playerevent join {
         (global "%uuid roomPos").shiftAllAxes(-6, 2, -6)
     );
 
+    // line entries: list[num] = [];
+    // for(line i of range(0, 39)) {
+    //     line avg = 0;
+    //     for(line j of range(1, 10)) {
     game.cloneRegion(
         loc(0, 6, 0),
         loc(50, 37, 50),
         loc(0, 6, 0),
         global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
     );
+    //         avg += treegens.growArbitraryTree(i).len();
+    //     }
+    //     print(avg);
+    //     entries.append(avg / 10);
+    // }
+    // line entryTxt = "";
+    // for(line entry of entries) {
+    //     entryTxt += line entry;
+    //     entryTxt += ",";
+    // }
+    // player.sendMessage(
+    //     txt.parseExpression("<click:copy_to_clipboard:\"%var(entryTxt)\">click to copy</click>", allowed = "Full")
+    // );
     start treegens.growForPlayer();
+
 }
 
 playerevent leave {
@@ -61,6 +79,18 @@ gameevent startup {
 }
 
 function startup() {
+    declare global log_families: list[log_family] = [
+        log_family(1, 0),
+        log_family(3, 6),
+        log_family(15, 12),
+        log_family(30, 18),
+        log_family(60, 24),
+        log_family(100, 30),
+        log_family(240, 36),
+        log_family(480, 42),
+        log_family(600, 48)
+    ];
+
     declare global woodTypeList: list[item] = [
         item("stripped_oak_wood"),
         item("stripped_spruce_wood"),
@@ -106,6 +136,7 @@ playerevent breakBlock {
         endthread;
     }
     line blocks = sweeping.getBlockOrders(
+        (global "%uuid stats")["tree_type"],
         event.blockLocation,
         (global "%uuid stats")["sweep"]
     );
@@ -173,10 +204,35 @@ playerevent movementKeyChange {
 playerevent command {
     if(event.commandArgumentEquals("grant_logs", 1) && player.hasPlotPermission(permission = "Owner")) {
         line playerName = event.commandArguments[2];
-        line amount = num.parse(event.commandArguments[3]);
+        line amount = num.parse(event.commandArguments[3].replace("_", ""));
         select playersByName(playerName);
         saved "%uuid logs" += amount;
         select reset;
         player.sendMessage(s"Sent %var(playerName) %var(amount) logs");
+    }
+    if(event.commandEquals("test_trees") && player.hasPlotPermission(permission = "Owner")) {
+        line entries: list[num] = [];
+        for(line i of range(0, 39)) {
+            line avg = 0;
+            for(line j of range(1, 10)) {
+                game.cloneRegion(
+                    loc(0, 6, 0),
+                    loc(50, 37, 50),
+                    loc(0, 6, 0),
+                    global "%uuid roomPos".shiftAllAxes(-25, -1, -25),
+                );
+                avg += treegens.growArbitraryTree(i).len();
+            }
+            print(avg);
+            entries.append(avg / 10);
+        }
+        line entryTxt = "";
+        for(line entry of entries) {
+            entryTxt += line entry;
+            entryTxt += ",";
+        }
+        player.sendMessage(
+            txt.parseExpression("<click:copy_to_clipboard:\"%var(entryTxt)\">click to copy</click>", allowed = "Full")
+        );
     }
 }

@@ -3,10 +3,9 @@ import util;
 import abils;
 
 playerevent chat {
-    global peopleWhoCant67: list[str] = ["908cd8fa-cc5d-4e5e-a941-4fd2fe6671e9"]; // list of people who are banned from saying 67
     // currently only contains DropExitJoin
-    if((global peopleWhoCant67.contains(default.uuid)) && (event.message.contains("67"))) {
-        default.sendMessage("you have been 67 banned");
+    if(event.message == "67") {
+        allPlayers.sendMessage("<dark_gray>%default Tried saying 67, But we banned it. <dark_red>L");
         event.cancel();
     }
     if(global chatGameSolution.len() != 0 && event.message.matches(global chatGameSolution, ignoreCase = "True")) {

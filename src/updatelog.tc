@@ -58,6 +58,7 @@ namespace updateMenu {
         icon = icon.addLore(s"<dark_gray>- <gray>Froogile");
         icon = icon.addLore(s"<dark_gray>- <gray>yair0211");
         icon = icon.addLore(s"<dark_gray>- <gray>Barfl");
+        icon = icon.addLore(s"<dark_gray>- <gray>Kenorbs");
 
         inv.setItem(32, icon);
 

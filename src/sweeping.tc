@@ -60,6 +60,11 @@ namespace sweeping {
         // activate timber skill, done here
         // as to not litter code all over the place
         if(num.random(1, 100) <= timberLevel) {
+            if (saved "%uuid timberCount" == 0) {
+                saved "%uuid timberCount" == 1;
+            } else {
+                saved "%uuid timberCount" += 1;
+            }
             player.playSound(snd("Axe Strip"), source = "Players");
             maxBlocks = 0;
 
@@ -222,6 +227,7 @@ namespace sweeping {
         if(mat != "air" && mat != "light" && !global "%uuid brokenLogs".contains(block)) {
             global "%uuid brokenLogs".append(block);
             saved "%uuid logs" += logValue;
+            declare saved "%uuid cumulativeLogs":num += logValue;
             declare saved "%uuid true_logs" += 1;
         }
         if(saved "%uuid settings"["logEffects"] == "Enabled" || saved "%uuid settings"["logEffects"] == "Particles Only") {

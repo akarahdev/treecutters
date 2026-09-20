@@ -230,6 +230,7 @@ import util;
 import treegens;
 import stats;
 import settingsMenu;
+import statsMenu;
 
 namespace statShop {
     function openMenu() {
@@ -293,6 +294,7 @@ namespace statShop {
         updateIcon = updateIcon.setName(s"<#cccccc>Update Log");
         updateIcon = updateIcon.setTag("update_menu", 1);
         inv.setItem(33, updateIcon);
+
 
         line slot = 1;
         for(line iconKey of namespace.getKeys(statShopIcon)) {
@@ -369,10 +371,19 @@ namespace statShop {
             slot++;
         }
 
+        //I'm putting this after the loop since it keeps disappearing and I don't know why
+        line statsIcon = item("writable_book");
+        statsIcon = statsIcon.setName(s"<#cccccc>Stats");
+        statsIcon = statsIcon.setTag("stats_menu", 1);
+        inv.setItem(32, statsIcon);
+
         inv.openForSelection();
     }
 
     function clickStatShopIcon() {
+        if(event.clickedSlotItem.hasTag("stats_menu")) {
+            statsMenu.openMenu();
+        }
         if(event.clickedSlotItem.hasTag("update_menu")) {
             updateMenu.openMenu();
         }

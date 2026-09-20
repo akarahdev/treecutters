@@ -261,6 +261,7 @@ namespace trinketShopMenu {
 
             if(saved "%uuid logs" >= trinket[entry["id"]].cost) {
                 saved "%uuid logs" -= trinket[entry["id"]].cost;
+                declare saved "%uuid totalTrinketCost":num += trinket[entry["id"]].cost;
                 
                 line rng = num.random(10, 1_000_000_000_000, rounding = "Whole number");
                 line rngStr = str.setToString(rng);

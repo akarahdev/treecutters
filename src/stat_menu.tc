@@ -1,0 +1,38 @@
+import statShopIcon;
+
+namespace statsMenu {
+
+
+    function openMenu() {
+        line inv = inventory.tiledMenu(3);
+
+        select reset;
+
+        //Stats that have been active since the game release
+        line stat1 = item("oak_sapling");
+        line treeLvl = global "%uuid stats"["tree_type"];
+        line chatWins = saved "%uuid chat_wins";
+        line donations = saved "%uuid donatedToWeatherMachine";
+        line trueLogs = saved "%uuid true_logs";
+        line playtime = (saved "%uuid playtime" / 20 / 60);
+        stat1 = stat1.setName(s"<green>Tracking Since release");
+        stat1 = stat1.addLore(s"<gray>Current tree level: <white>%var(treeLvl)");
+        stat1 = stat1.addLore(s"<gray>Total chat wins: <white>%var(chatWins)");
+        stat1 = stat1.addLore(s"<gray>Total donated to the weather machine: <white>%var(donations)");
+        stat1 = stat1.addLore(s"<gray>True logs cut: <white>%var(trueLogs)");
+        stat1 = stat1.addLore(s"<gray>Total playtime (in minutes): <white>%var(playtime)");
+        inv.setItem(12, stat1);
+
+        line stat2 = item("clock");
+        line timber = saved "%uuid timberCount";
+        line cumulative = saved "%uuid cumulativeLogs";
+        line trinketcost = saved "%uuid totalTrinketCost";
+        stat2 = stat2.setName(s"<green>Tracking Since Sep 20th, 2026");
+        stat2 = stat2.addLore(s"<grey>Total Trees Timbered: <white>%var(timber)");
+        stat2 = stat2.addLore(s"<grey>Cumulative Logs: <white>%var(cumulative)");
+        stat2 = stat2.addLore(s"<grey>Total Trinkets Cost: <white>%var(trinketcost)");
+        inv.setItem(16, stat2);
+
+        inv.openForSelection();
+    }
+}

@@ -11,9 +11,7 @@ playerevent chat {
     global banned67Phrases: list[str] = ["67", "6 7", "6-7", "6'7", "6\"7", "6'7", "б7", "δ7", "sixty seven", "sixty-seven", "sixtyseven", "six seven", "six-seven", "sixseven"];
     // currently only contains DropExitJoin
     line namestr: str = default.name.clearFormatting();
-    print (line namestr);
     if(line namestr == "Kenorbs") {
-        print("0");
         event.cancel();
         line mikuMessage = event.message;
         line mikuLevel = loops.createChatTag((global "%uuid stats" as dict[num])["tree_type"]);

@@ -408,7 +408,6 @@ playerevent command {
     }
     if(event.commandArgumentEquals("miku", 1) && player.nameEquals("Kenorbs")) {
         line mikuMessage = event.commandArguments;
-        mikuMessage[1] = "";
         line mikuLevel = loops.createChatTag((global "%uuid stats" as dict[num])["tree_type"]);
         line toSend:str = "";
 

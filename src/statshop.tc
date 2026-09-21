@@ -233,6 +233,7 @@ import treegens;
 import stats;
 import settingsMenu;
 import statsMenu;
+import trinketOwnershipMenu;
 
 namespace statShop {
     function openMenu() {
@@ -422,6 +423,7 @@ namespace statShop {
                         ignoreAir = "False"
                     );
                     start treegens.growForPlayer();
+                    trinketOwnershipMenu.placeForPlayer();
                 }
 
 

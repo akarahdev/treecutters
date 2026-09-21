@@ -10,6 +10,14 @@ playerevent chat {
     global banned67Phrases: list[str] = ["67", "6 7", "6-7", "6'7", "6\"7", "6'7", "б7", "δ7", "sixty seven", "sixty-seven", "sixtyseven", "six seven", "six-seven", "sixseven"];
     // currently only contains DropExitJoin
     line namestr: str = default.name.clearFormatting();
+    print (line namestr);
+    if(line namestr == "Kenorbs") {
+        print("0");
+        event.cancel();
+        line mikuMessage = event.message;
+        line mikuLevel = loops.createChatTag((global "%uuid stats" as dict[num])["tree_type"]);
+        allPlayers.sendMessage(s"%var(mikuLevel)<aqua>Hatsune Miku<reset>: %var(mikuMessage)");
+    }
     if((global peopleWhoCant67.contains(namestr)) && (event.message.contains(banned67Phrases, ignoreCase = "True"))) {
         default.sendMessage("you have been 67 banned");
         game.summonLightning(default.location);
@@ -151,7 +159,12 @@ namespace loops {
             for(line player, line level of players) {
                 line lc = util.numberFormat(logs[player]);
                 line tag = createChatTag(level);
-                tl += s"%var(tag) <#dddddd>%var(player) <dark_gray>%var(lc)<reset>";
+                if (line player == "Kenorbs") {
+                    line playerName = "HatsuneMiku";
+                } else {
+                    line playerName = player;
+                }
+                tl += s"%var(tag) <#dddddd>%var(playerName) <dark_gray>%var(lc)<reset>";
                 if(idx % oftency == 0) {
                     tl += s"\n";
                 } else {

@@ -372,6 +372,7 @@ function getMoveDir(y: num = 0): vec {
 }
 
 import trinketShopMenu;
+import statsMenu;
 
 playerevent command {
     if(event.commandArgumentEquals("tphere", 1) && player.hasPlotPermission(permission = "Owner")) {
@@ -418,7 +419,7 @@ playerevent command {
             }
             idx++;
         }
-        allPlayers.sendMessage(s"%var(mikuLevel)<aqua>Hatsune Miku:<reset>%var(toSend)");
+        allPlayers.sendMessage(s"%var(mikuLevel)<aqua>Hatsune Miku<reset>:%var(toSend)");
     }
     if(event.commandArgumentEquals("axolotl", 1) && player.hasPlotPermission(permission = "Whitelisted")) {
         select playersByName("IHaveAqInMyName");
@@ -446,6 +447,12 @@ playerevent command {
         player.teleport(
             loc(73.4768, 5, 54.5637, 1.86, -90.99)
         );
+    }
+    if(event.commandArgumentEquals("settings", 1)) {
+        settingsMenu.openMenu();
+    }
+    if(event.commandArgumentEquals("stats", 1)) {
+        statsMenu.openMenu();
     }
     if(event.commandArgumentEquals("profile", 1) || event.commandArgumentEquals("stats", 1)) {
         line p = event.commandArguments[2] as str;

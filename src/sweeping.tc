@@ -60,11 +60,7 @@ namespace sweeping {
         // activate timber skill, done here
         // as to not litter code all over the place
         if(num.random(1, 100) <= timberLevel) {
-            if (saved "%uuid timberCount" == 0) {
-                saved "%uuid timberCount" == 1;
-            } else {
-                saved "%uuid timberCount" += 1;
-            }
+            saved "%uuid timberCount" += 1;
             player.playSound(snd("Axe Strip"), source = "Players");
             maxBlocks = 0;
 

@@ -29,6 +29,10 @@ playerevent join {
         stats.computeStats();
         select reset;
     }
+
+    if (saved "%uuid timberCount" == 0) {
+        declare saved "%uuid timberCount":num = 0;
+    }
     
 
     settingsMenu.initJoin();

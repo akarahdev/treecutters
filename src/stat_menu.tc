@@ -31,7 +31,25 @@ namespace statsMenu {
         stat2 = stat2.addLore(s"<grey>Total Trees Timbered: <white>%var(timber)");
         stat2 = stat2.addLore(s"<grey>Cumulative Logs: <white>%var(cumulative)");
         stat2 = stat2.addLore(s"<grey>Total Trinkets Cost: <white>%var(trinketcost)");
-        inv.setItem(16, stat2);
+        inv.setItem(14, stat2);
+
+
+        line stat3 = item("potato");
+        stat3 = stat3.setModel("minecraft:iron_axe");
+        stat3 = stat3.clearAttributes();
+        stat3 = stat3.setLore();
+        stat3 = stat3.setName(s"<green>Upgrade Stats");
+        line stats =  global "%uuid stats"; 
+        //stats var has all of the personal values but doesn't have the pretty names 
+        //so we're going to use statShopIcon to get the nice names, then figure out the corresponding value in stats
+        //this will mean all further stats will get added automatically
+        for(line iconKey of namespace.getKeys(statShopIcon)) {
+            line name = statShopIcon[iconKey].name;
+            line tag = statShopIcon[iconKey].stat;
+            line amount = stats[tag];
+            stat3 = stat3.addLore(s"<grey>%var(name): <white>%var(amount)");
+        }
+        inv.setItem(16, stat3);
 
         inv.openForSelection();
     }

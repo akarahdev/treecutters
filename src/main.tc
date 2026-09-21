@@ -373,6 +373,7 @@ function getMoveDir(y: num = 0): vec {
 
 import trinketShopMenu;
 import statsMenu;
+import chatLoops;
 
 playerevent command {
     if(event.commandArgumentEquals("tphere", 1) && player.hasPlotPermission(permission = "Owner")) {
@@ -484,7 +485,7 @@ playerevent command {
         loops.didyouknow();
     }
     if(event.commandArgumentEquals("chat_game", 1) && player.hasPlotPermission(permission = "Owner")) {
-        loops.setupChatGameHidden(num.parse(event.commandArguments[2]));
+        chatLoops.setupChatGameHidden(num.parse(event.commandArguments[2]));
     }
     if(event.commandArgumentEquals("setstatshop", 1) && player.hasPlotPermission(permission = "Owner")) {
         line skill = event.commandArguments[2];

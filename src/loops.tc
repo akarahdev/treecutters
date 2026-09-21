@@ -90,7 +90,7 @@ playerevent chat {
 }
 
 import stocksMenu;
-import loops;
+import chatLoops;
 import weather;
 
 namespace loops {
@@ -113,8 +113,9 @@ namespace loops {
         start playerLoop(targetMode = "For each in selection");
         select reset;
         
+        global ChatGamesTimer--;
         if(game.ticksSinceStartup % 1000 == 0) {
-            loops.setupChatGame();
+            chatLoops.setupChatGame();
         }
 
         if(game.ticksSinceStartup % 20 == 0) {
@@ -262,12 +263,15 @@ namespace loops {
                 tl += s"<gray>Weather Machine: <green>+600%\n";
             }
             line globalDrillMulFmt = util.numberFormat(globalDrillMul);
+            //Format chat games timer nicer
+            line chatTimerSeconds = global ChatGamesTimer / 20;
+            chatTimerSeconds = chatTimerSeconds.round();
             tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
             tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";
-            tl += "\n"
-            tl += s"<reset><gray>Next Chat Game Time: <yellow>%var(ChatGamesTimer)t";
+            tl += "\n";
+            tl += s"<reset><gray>Next Chat Game Time: <yellow>%var(chatTimerSeconds)s";
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             
             allPlayers.setTabListInfo(tl, field = "Header");

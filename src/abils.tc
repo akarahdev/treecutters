@@ -10,7 +10,7 @@ namespace abils {
 
             line rngBlock = var.setToRandom(diff) as loc;
 
-            if(rngBlock == 0) {
+            if(!var.isType(rngBlock, "type" = "Location")) {
                 return;
             }
 

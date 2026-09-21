@@ -1,7 +1,6 @@
 import statShopIcon;
 import trinket;
 import statsMenu;
-import util;
 
 namespace statsMenu {
 
@@ -42,9 +41,9 @@ namespace statsMenu {
         line stat1 = item("oak_sapling");
         line treeLvl = global "%uuid stats"["tree_type"];
         line chatWins = saved "%uuid chat_wins";
-        line donations = util.numberFormat(saved "%uuid donatedToWeatherMachine");
-        line trueLogs = util.numberFormat(saved "%uuid true_logs");
-        line playtime = util.numberFormat((saved "%uuid playtime" / 20 / 60));
+        line donations = saved "%uuid donatedToWeatherMachine";
+        line trueLogs = saved "%uuid true_logs";
+        line playtime = (saved "%uuid playtime" / 20 / 60);
         stat1 = stat1.setName(s"<green>Tracking Since release");
         stat1 = stat1.addLore(s"<gray>Current tree level: <white>%var(treeLvl)");
         stat1 = stat1.addLore(s"<gray>Total chat wins: <white>%var(chatWins)");

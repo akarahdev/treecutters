@@ -6,9 +6,8 @@ import trinketShopMenu;
 import throwingaxe;
 
 playerevent chat {
-    global peopleWhoCant67: list[str] = ["DropExitJoin", "Criscomec", "ducktacular", "doyoulikemyhat", "Nuggetz_yipee", "Arid181"]; // list of people who are banned from saying 67
-    global banned67Phrases: list[str] = ["67", "6 7", "6-7", "6'7", "6\"7", "6'7", "б7", "δ7", "sixty seven", "sixty-seven", "sixtyseven", "six seven", "six-seven", "sixseven"];
-    // currently only contains DropExitJoin
+    declare global peopleWhoCant67: list[str] = ["DropExitJoin", "Criscomec", "ducktacular", "doyoulikemyhat", "Nuggetz_yipee", "Arid181"]; // list of people who are banned from saying 67
+    declare global banned67Phrases: list[str] = ["67", "6 7", "6-7", "6'7", "6\"7", "6'7", "б7", "δ7", "sixty seven", "sixty-seven", "sixtyseven", "six seven", "six-seven", "sixseven"];
     line namestr: str = default.name.clearFormatting();
     if((global peopleWhoCant67.contains(namestr)) && (event.message.contains(banned67Phrases, ignoreCase = "True"))) {
         default.sendMessage("you have been 67 banned");

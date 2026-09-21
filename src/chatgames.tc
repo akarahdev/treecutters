@@ -18,6 +18,7 @@ namespace chatLoops {
     function setupChatGameHidden(gameType = 0) {
         declare global chatGameSolutions: list[str] = [];
         declare global ChatGamesTimer:num = 0;
+        print(ChatGamesTimer);
 
         if(gameType == 0) {
             gameType = num.random(1, 5, rounding = "Whole number");

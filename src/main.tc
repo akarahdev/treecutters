@@ -387,6 +387,13 @@ playerevent command {
         line arg = event.commandArguments[2];
         trinketShopMenu.rerollShop();
     }
+    //I added this back for testing reasons, trinket page would have been impossible to test otherwise - Kenorbs
+    if(event.commandArgumentEquals("kickall", 1) && player.hasPlotPermission(permission = "Developer")) {
+        select allPlayers;
+        selected.kick();
+        select reset;
+
+    }
     if(event.commandArgumentEquals("bc", 1) && player.hasPlotPermission(permission = "Whitelisted")) {
         line st = event.command.trim(4);        
         allPlayers.sendMessage(s"<strikethrough><dark_gray><space:40>");

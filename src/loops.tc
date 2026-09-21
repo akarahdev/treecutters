@@ -111,7 +111,11 @@ namespace loops {
         start playerLoop(targetMode = "For each in selection");
         select reset;
         
-        global ChatGamesTimer--;
+        if (global ChatGamesTimer > 0) {
+            global ChatGamesTimer--;
+        } else {
+            global ChatGamesTimer = 3000;
+        }
         if(game.ticksSinceStartup % 1000 == 0) {
             chatLoops.setupChatGame();
         }

@@ -304,6 +304,7 @@ namespace trinketOwnershipMenu {
         }
     }
 
+    
     function openMenu() {
 
         declare global "%uuid trinketIdx" = trinketPositions.find(global "%uuid targetShulkerVec");
@@ -324,27 +325,59 @@ namespace trinketOwnershipMenu {
             declare saved "%uuid trinketInventory": dict[trinketEntry] = {};
         }
 
-        line idx = 1;
-        for(line rngId, line elem of saved "%uuid trinketInventory") {
-            line icon = trinketShopMenu.trinketIcon(elem["id"]);
+        // Initialize the page number if this is the player's first visit.
+        if(!var.exists(global "%uuid trinketOwnershipPage")) {
+            declare global "%uuid trinketOwnershipPage":num = 0;
+        }
 
-            if(saved "%uuid trinketSelections".contains(rngId)) {
-                icon = icon.addLore(s"");
-                icon = icon.addLore(s"<green><bold>ALREADY IN USE!");
-            } else {
-                icon = icon.addLore(s"");
-                icon = icon.addLore(s"<yellow>Click to equip!");
-                icon = icon.setTag("equip_trinket_by_id", rngId);
+        line page:num = global "%uuid trinketOwnershipPage";
+        line pageSize:num = 45;
+        line firstTrinket = page * pageSize;
+        line lastTrinket = firstTrinket + pageSize;
+
+        //Count every trinket, but only display those on the current page.
+        line idx = 0;
+        for(line rngId, line elem of saved "%uuid trinketInventory") {
+
+            if(idx >= firstTrinket && idx < lastTrinket) {
+                line icon = trinketShopMenu.trinketIcon(elem["id"]);
+
+                if(saved "%uuid trinketSelections".contains(rngId)) {
+                    icon = icon.addLore(s"");
+                    icon = icon.addLore(s"<green><bold>ALREADY IN USE!");
+                } else {
+                    icon = icon.addLore(s"");
+                    icon = icon.addLore(s"<yellow>Click to equip!");
+                    icon = icon.setTag("equip_trinket_by_id", rngId);
+                }
+
+                //Slots 1–45 are reserved for trinkets.
+                inv.setItem(idx - firstTrinket + 1, icon);
             }
 
-            inv.setItem(idx, icon);
             idx++;
+        }
+
+        if(page > 0) {
+            line prevIcon = item("arrow");
+            prevIcon = prevIcon.setName(s"<yellow>Previous Page");
+            prevIcon = prevIcon.setTag("trinket_previous_page", 1);
+            inv.setItem(46, prevIcon);
+        }
+
+
+        if(lastTrinket < idx) {
+            line nextIcon = item("arrow");
+            nextIcon = nextIcon.setName(s"<yellow>Next Page");
+            nextIcon = nextIcon.setTag("trinket_next_page", 1);
+            inv.setItem(54, nextIcon);
         }
 
         line shopIcon = item("gold_ingot");
         shopIcon = shopIcon.setName(s"<yellow>Trinket Shop");
         shopIcon = shopIcon.setTag("open_trinket_shop", 1);
-        inv.setItem(54, shopIcon);
+        inv.setItem(50, shopIcon);
+
         inv.openForSelection();
     }
 
@@ -362,6 +395,22 @@ namespace trinketOwnershipMenu {
         line id = event.item.getTag("equip_trinket_by_id") as num;
         if(id != 0) {
             saved "%uuid trinketSelections"[global "%uuid trinketIdx"] = id;
+            trinketOwnershipMenu.openMenu();
+            wait(2);
+            trinketOwnershipMenu.placeForPlayer();
+        }
+        
+        if(event.item.hasTag("trinket_previous_page")) {
+            if(global "%uuid trinketOwnershipPage" > 0) {
+                global "%uuid trinketOwnershipPage":num -= 1;
+            }
+            trinketOwnershipMenu.openMenu();
+            wait(2);
+            trinketOwnershipMenu.placeForPlayer();
+        }
+
+        if(event.item.hasTag("trinket_next_page")) {
+            global "%uuid trinketOwnershipPage":num += 1;
             trinketOwnershipMenu.openMenu();
             wait(2);
             trinketOwnershipMenu.placeForPlayer();

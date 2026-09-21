@@ -1,6 +1,35 @@
 import statShopIcon;
+import trinket;
+import statsMenu;
 
 namespace statsMenu {
+
+    function computeStats() {
+        declare local stathash:list[{"tag": str, "name": str, "amount": num}] = [];
+        line stats =  global "%uuid stats"; 
+
+        //Here we actually build the hash
+        //Right now I only loop through the stats purchasable in the shop, 
+        //But it shouldn't be too difficult to add other things like chat tag, 
+        //tree type, etc.
+        for(line iconKey of namespace.getKeys(statShopIcon)) {
+            
+            //Each hash entry has three parts, its ID tag, the pretty print name, and it's value
+            //We can use this to easily search for stats with it's tag, display them nicely, 
+            //and actually figure out how much of each thing there is. 
+            line hashEntry:{"tag": str, "name": str, "amount": num} = {
+                "tag": statShopIcon[iconKey].stat,
+                "name": statShopIcon[iconKey].name,
+                "amount": stats[statShopIcon[iconKey].stat]
+            };
+
+            stathash.append(hashEntry);
+            
+        }
+
+        
+        declare global "%uuid statHash":list[{"tag": str, "name": str, "amount": num}] = stathash;
+    }
 
 
     function openMenu() {
@@ -31,7 +60,26 @@ namespace statsMenu {
         stat2 = stat2.addLore(s"<grey>Total Trees Timbered: <white>%var(timber)");
         stat2 = stat2.addLore(s"<grey>Cumulative Logs: <white>%var(cumulative)");
         stat2 = stat2.addLore(s"<grey>Total Trinkets Cost: <white>%var(trinketcost)");
-        inv.setItem(16, stat2);
+        inv.setItem(14, stat2);
+
+
+        statsMenu.computeStats();
+
+        line stat3 = item("potato");
+        stat3 = stat3.setModel("minecraft:iron_axe");
+        stat3 = stat3.clearAttributes();
+        stat3 = stat3.setLore();
+        stat3 = stat3.setName(s"<green>Upgrade Stats");
+        line stats =  global "%uuid stats"; 
+        //stats var has all of the personal values but doesn't have the pretty names 
+        //so we're going to use statShopIcon to get the nice names, then figure out the corresponding value in stats
+        //this will mean all further stats will get added automatically
+        for(line entry of global "%uuid statHash") {
+            line name = entry["name"];
+            line amount = entry["amount"];
+            stat3 = stat3.addLore(s"<grey>%var(name): <white>%var(amount)");
+        }
+        inv.setItem(16, stat3);
 
         inv.openForSelection();
     }

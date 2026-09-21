@@ -151,7 +151,7 @@ namespace loops {
                 line lc = util.numberFormat(logs[player]);
                 line tag = createChatTag(level);
                 tl += s"%var(tag) <#dddddd>%var(player) <dark_gray>%var(lc)<reset>";
-                if(idx % oftency == 1) {
+                if(idx % oftency == 0) {
                     tl += s"\n";
                 } else {
                     tl += s"<space:7>";
@@ -203,8 +203,23 @@ namespace loops {
                 tl += s"<gray>Status: <yellow>Supercell\n";
                 tl += s"<gray>Cost: <red>-400k/s/p\n";
             }
+            if(weatherType == 7) {
+                tl += s"<gray>Status: <red>Multi-Vortex Supercell\n";
+                tl += s"<gray>Cost: <red>-800k/s/p\n";
+            }
+            if(weatherType == 8) {
+                tl += s"<gray>Status: <red>EF-6 Multi-Vortex Supercell\n";
+                tl += s"<gray>Cost: <red>-1.1m/s/p\n";
+            }
             line fmt = util.numberFormat(weatherMachineLogs);
             tl += s"<gray>Logs: <green>%var(fmt)\n\n";
+
+
+            tl += s"<dark_blue><bold>DRILL<reset>\n";
+            line fmt = util.numberFormat(saved drillLogUnits);
+            tl += s"<gray>Logs: <green>%var(fmt),000,000,000";
+            tl += s"<reset>\n\n";
+
             tl += s"<reset><yellow><bold>GLOBAL BUFFS\n<reset>";
             tl += s"<reset><gray>Trinkets: <green>+%var(globalTrinketBuff)%\n";
             if(weatherType == 1) {
@@ -225,10 +240,18 @@ namespace loops {
             if(weatherType == 6) {
                 tl += s"<gray>Weather Machine: <green>+350%\n";
             }
+            if(weatherType == 7) {
+                tl += s"<gray>Weather Machine: <green>+475%\n";
+            }
+            if(weatherType == 8) {
+                tl += s"<gray>Weather Machine: <green>+600%\n";
+            }
+            line globalDrillMulFmt = util.numberFormat(globalDrillMul);
+            tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
             tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";
-
+            tl += s"<reset><gray>Next Chat Game Time": <yellow>(game.ticksSinceStartup % 3000)s"
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             
             allPlayers.setTabListInfo(tl, field = "Header");
@@ -277,6 +300,12 @@ namespace loops {
                 1
             );
         }
+
+        //I think this is 9 quadrillion
+        if(saved "%uuid logs" > 9000000000000000) {
+            saved "%uuid logs" = 9000000000000000;
+        }
+        
 
         // general counters
         declare saved "%uuid playtime" += 1;
@@ -447,6 +476,9 @@ namespace loops {
         }
         if(level > 119) {
             color = "gradient:#D60270:#0038A8";
+        }
+        if(level > 124) {
+            color = "gradient:#A8D47A:#AAABAB";
         }
         return txt.parseExpression("<dark_gray>[<%var(color)>%var(level)🪓<dark_gray>]");
     }

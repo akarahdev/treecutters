@@ -60,11 +60,7 @@ namespace sweeping {
         // activate timber skill, done here
         // as to not litter code all over the place
         if(num.random(1, 100) <= timberLevel) {
-            if (saved "%uuid timberCount" == 0) {
-                saved "%uuid timberCount" == 1;
-            } else {
-                saved "%uuid timberCount" += 1;
-            }
+            saved "%uuid timberCount" += 1;
             player.playSound(snd("Axe Strip"), source = "Players");
             maxBlocks = 0;
 
@@ -161,8 +157,19 @@ namespace sweeping {
             // all of you are going to die
             logMul += 3.5;
         }
+        if(weatherType == 7) {
+            // waowaowawaow
+            logMul += 4.75;
+        }
+        if(weatherType == 8) {
+            // waowaowawaow
+            logMul += 6;
+        }
 
         declare global globalTrinketBuff = 0;
+
+        declare global lv100AboveCounter = 0;
+
         for(line p of game.plotPlayerUUIDs) {
             select playersByName(p);
             for(line rngId of saved "%uuid trinketSelections") {
@@ -174,6 +181,10 @@ namespace sweeping {
                 line globalBuff = trinket[saved "%uuid trinketInventory"["%var(rngId)"]["id"]].globalLogValueBonus;
                 
                 globalTrinketBuff += globalBuff;
+
+                if(global "%uuid stats"["tree_type"] >= 100) {
+                    lv100AboveCounter++;
+                }
             }
             select reset;
         }
@@ -182,6 +193,10 @@ namespace sweeping {
         globalTrinketBuff = globalTrinketBuff.round();
 
         logMul += (globalTrinketBuff / 100);
+
+        declare global globalDrillMul: num = 0;
+
+        globalDrillMul += (num.root(lv100AboveCounter, 1.3) * num.root(drillLogUnits, 1.6)).ceil();
 
         declare global "globalLogMul": num = logMul;
 
@@ -204,6 +219,10 @@ namespace sweeping {
             ].localLogValueBonus;
         }
         logMul += localTrinketBuff / 100;
+
+        if(global "%uuid stats"["tree_type"] >= 100) {
+            logMul += ((globalDrillMul) / 100);
+        }
 
         declare global "%uuid logMul": num = logMul;
         declare global "%uuid logValue" = log_families[num.floor(global "%uuid stats"["tree_type"]/5)+1]["value"];

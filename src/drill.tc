@@ -1,0 +1,12 @@
+namespace drill {
+    function clicks() {
+        if(player.isLookingAtBlock(loc(81, 3, 140))) {
+            if(saved "%uuid logs" >= 1_000_000_000) {
+                saved "%uuid logs" -= 1_000_000_000;
+                declare saved "drillLogUnits": num += 1;
+                declare saved "%uuid donatedDrillLogUnits": num += 1;
+                player.playSound(snd("Fire Charge Use"));
+            }
+        }       
+    }
+}

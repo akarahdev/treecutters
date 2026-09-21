@@ -99,7 +99,9 @@ namespace statShopIcon.treeType {
         5_000_000_000, 6_000_000_000, 7_000_000_000, 8_000_000_000,
         10_000_000_000, // lv 115
         13_000_000_000, 16_000_000_000, 19_000_000_000, 22_000_000_000,
-        25_000_000_000 // lv 120
+        25_000_000_000, // lv 120
+        30_000_000_000, 35_000_000_000, 40_000_000_000, 45_000_000_000,
+        50_000_000_000 // lv 125
     ];
     maxLevel = 100000000;
     description: list[str] = ["Increases your tree type level,", "allowing you to unlock new tree types,", "new upgrades, and general progression."];
@@ -279,6 +281,9 @@ namespace statShop {
         if(!var.exists(weatherDonationLeaderboard)) {
             declare saved weatherDonationLeaderboard: dict[num] = {};
         }
+        if(!var.exists(drillDonationLeaderboard)) {
+            declare saved drillDonationLeaderboard: dict[num] = {};
+        }
         if(!var.exists(playtimeLeaderboard)) {
             declare saved playtimeLeaderboard: dict[num] = {};
         }
@@ -436,6 +441,7 @@ namespace statShop {
             chatWinLeaderboard[p] = saved "%uuid chat_wins";
             weatherDonationLeaderboard[p] = saved "%uuid donatedToWeatherMachine";
             trueLogLeaderboard[p] = saved "%uuid true_logs";
+            drillDonationLeaderboard[p] = saved "%uuid donatedDrillLogUnits";
             playtimeLeaderboard[p] = (saved "%uuid playtime" / 20 / 60);
             leaderboardNames[p] = selected.name.clearFormatting();
             select reset;
@@ -446,6 +452,7 @@ namespace statShop {
         trueLogLeaderboard = trueLogLeaderboard.sort("type" = "Sort by Value", order = "Descending");
         weatherDonationLeaderboard = weatherDonationLeaderboard.sort("type" = "Sort by Value", order = "Descending");
         playtimeLeaderboard = playtimeLeaderboard.sort("type" = "Sort by Value", order = "Descending");
+        drillDonationLeaderboard = drillDonationLeaderboard.sort("type" = "Sort by Value", order = "Descending");
         
         line txts: list[txt] = [];
         line idx = 1;
@@ -467,7 +474,11 @@ namespace statShop {
             line lbType = "playtimeLeaderboard";
             txts.append(s"<gray>Type: <yellow>Playtime (in Minutes)");
             txts.append(s"");
-        } else if(global "%uuid leaderboardType" == 5 || global "%uuid leaderboardType" == 0) {
+        } else if(global "%uuid leaderboardType" == 5) {
+            line lbType = "drillDonationLeaderboard";
+            txts.append(s"<gray>Type: <yellow>Drill Donation Leaderboard");
+            txts.append(s"");
+        } else if(global "%uuid leaderboardType" == 6 || global "%uuid leaderboardType" == 0) {
             global "%uuid leaderboardType" = 0;
             txts.append(s"<gray>Type: <yellow>Tree Type Level");
             txts.append(s"");

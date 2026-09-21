@@ -44,7 +44,7 @@ namespace update.sep19th {
 
 namespace update.sep20th {
     date = "September 20th";
-    changes: list[str] = ["+ Buffed non-Helix trinkets", "+ Added Absolution trinket", "+ Adjusted stats and weights for every trinket", "+ Reduced global trinket exponent from 0.95 to 0.9"];
+    changes: list[str] = ["+ Buffed non-Helix trinkets", "+ Added Absolution trinket", "+ Adjusted stats and weights for every trinket", "+ Reduced global trinket exponent from 0.95 to 0.9", "+ Added stats bar", "+ Added multi-vortex supercell weather", "+ Added Drill", "+ Added max level 125"];
 }
 
 namespace updateMenu {

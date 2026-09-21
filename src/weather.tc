@@ -5,7 +5,35 @@ namespace weather {
 
         
         
-        if(weatherMachineLogs > 500_000_000) {
+        if(weatherMachineLogs > 3_000_000_000) {
+            // multi-vortex supercell
+            weatherMachineLogs -= (1_100_000 * game.playerCount)/20;
+            weatherType = 8;
+            if(game.ticksSinceStartup % 50 == 1) {
+                game.summonLightning(loc(101, 14, 62));
+            }
+            select allPlayers;
+            selected.displayParticleEffect(
+                par("Smoke", amount = 70, spreadHoriz = 16, spreadVert = 16, motion = vec(0, -3, -30), motionVariation = 0.05),
+                selected.eyeLocation
+            );
+            select reset;
+            allPlayers.setWeather(weather = "Downfall");
+        } else if(weatherMachineLogs > 1_000_000_000) {
+            // multi-vortex supercell
+            weatherMachineLogs -= (800000 * game.playerCount)/20;
+            weatherType = 7;
+            if(game.ticksSinceStartup % 60 == 1) {
+                game.summonLightning(loc(101, 14, 62));
+            }
+            select allPlayers;
+            selected.displayParticleEffect(
+                par("Smoke", amount = 40, spreadHoriz = 16, spreadVert = 16, motion = vec(0, -3, -30), motionVariation = 0.05),
+                selected.eyeLocation
+            );
+            select reset;
+            allPlayers.setWeather(weather = "Downfall");
+        } else if(weatherMachineLogs > 500_000_000) {
             // supercell
             weatherMachineLogs -= (400000 * game.playerCount)/20;
             weatherType = 6;

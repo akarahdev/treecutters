@@ -29,6 +29,10 @@ playerevent join {
         stats.computeStats();
         select reset;
     }
+
+    if (saved "%uuid timberCount" == 0) {
+        declare saved "%uuid timberCount":num = 0;
+    }
     
 
     settingsMenu.initJoin();
@@ -235,8 +239,11 @@ import throwingaxe;
 import stocksMenu;
 import weather;
 import trinketOwnershipMenu;
+import drill;
+
 lscancel playerevent rightClick {
     event.cancel();
+    drill.clicks();
     weather.donate();
     stocksMenu.clicks();
     if(event.blockEquals(item("lime_shulker_box"))) {
@@ -373,6 +380,11 @@ playerevent command {
         selected.teleport(default.location);
         select reset;
     }
+    //I added this back for testing reasons, trinket page would have been impossible to test otherwise - Kenorbs
+    if(event.commandArgumentEquals("reroll", 1) && player.hasPlotPermission(permission = "Developer")) {
+        line arg = event.commandArguments[2];
+        trinketShopMenu.rerollShop();
+    }
     if(event.commandArgumentEquals("bc", 1) && player.hasPlotPermission(permission = "Whitelisted")) {
         line st = event.command.trim(4);        
         allPlayers.sendMessage(s"<strikethrough><dark_gray><space:40>");
@@ -393,6 +405,20 @@ playerevent command {
                 player.teleport((global "%uuid roomPos").shiftAllAxes(-6, 3, -6));
             }
         }
+    }
+    if(event.commandArgumentEquals("miku", 1) && player.nameEquals("Kenorbs")) {
+        line mikuMessage = event.commandArguments;
+        line mikuLevel = loops.createChatTag((global "%uuid stats" as dict[num])["tree_type"]);
+        line toSend:str = "";
+
+        line idx = 0;
+        for(line message of mikuMessage) {
+            if(idx > 0) {
+                toSend = "%var(toSend) %var(message)";
+            }
+            idx++;
+        }
+        allPlayers.sendMessage(s"%var(mikuLevel)<aqua>Hatsune Miku:<reset>%var(toSend)");
     }
     if(event.commandArgumentEquals("axolotl", 1) && player.hasPlotPermission(permission = "Whitelisted")) {
         select playersByName("IHaveAqInMyName");

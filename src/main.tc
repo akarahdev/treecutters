@@ -409,7 +409,7 @@ playerevent command {
             if(event.commandArgumentEquals("weather", 2)) {
                 player.teleport(loc(98.5, 5.5, 63.5, 0, -90));
             }
-            if (event.commandArgumentEquals("drill", 2)) {
+            if(event.commandArgumentEquals("drill", 2)) {
                 player.teleport(loc(80.5, 3.5, 137.5, 0, 0));
             }
         }

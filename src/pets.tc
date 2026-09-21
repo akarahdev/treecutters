@@ -1,0 +1,28 @@
+import util;
+
+namespace pet {
+    schema: namespace {
+        name: str;
+        stats: dict[num] = {};
+        shopWeight: num = 10;
+        cost: num;
+        icon: item;
+        perk: function() -> void;
+    };
+}
+
+namespace pet.axolotl {
+    name = "Axolotl";
+    stats: dict[num] = {
+        "sweep": 5,
+        "timber": 1
+    };
+    shopWeight = 1;
+    cost = 3_000_000_000;
+    icon = item("axolotl_bucket");
+    function perk() {
+
+    }
+}
+
+type petEntry: { id: str, level: num };

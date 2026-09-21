@@ -302,6 +302,12 @@ namespace loops {
             );
         }
 
+        //I think this is 9 quadrillion
+        if(saved "%uuid logs" > 9000000000000000) {
+            saved "%uuid logs" = 9000000000000000;
+        }
+        
+
         // general counters
         declare saved "%uuid playtime" += 1;
         if(game.ticksSinceStartup % (60 * 20) == 0 && game.plotPlayerUUIDs[1] == player.uuid) {

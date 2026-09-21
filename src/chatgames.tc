@@ -3,7 +3,10 @@ namespace loops {
     // to make sure the chat game can actually be ran
     function setupChatGame() {
         if(game.ticksSinceStartup % 3000 != 0) {
+            ChatGamesTimer --;
             return;
+        } else {
+            ChatGamesTimer = 3000;
         }
         if(game.playerCount < 3) {
             return;

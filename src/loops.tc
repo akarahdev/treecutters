@@ -252,7 +252,8 @@ namespace loops {
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
             tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";
-            tl += s"<reset><gray>Next Chat Game Time": <yellow>(game.ticksSinceStartup % 3000)s"
+            tl += "\n"
+            tl += s"<reset><gray>Next Chat Game Time": <yellow>%var(ChatGamesTimer)s"
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             
             allPlayers.setTabListInfo(tl, field = "Header");

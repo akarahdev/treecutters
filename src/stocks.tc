@@ -6,7 +6,7 @@ playerevent move {
     if(player.location.getDistance(loc(103, 5, 41)) <= 12) {
         stocksMenu.updateValue();
     }
-    declare global "%uuid turretTimer": num = 5;
+    declare global "%uuid turretTimer": num = global "%uuid stats"["turret"] + 1;
 }
 
 namespace stocksMenu {

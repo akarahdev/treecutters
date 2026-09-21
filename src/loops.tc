@@ -4,6 +4,7 @@ import abils;
 import sweeping;
 import trinketShopMenu;
 import throwingaxe;
+import loops;
 
 playerevent chat {
     declare global peopleWhoCant67: list[str] = ["DropExitJoin", "Criscomec", "ducktacular", "doyoulikemyhat", "Nuggetz_yipee", "Arid181"]; // list of people who are banned from saying 67
@@ -252,8 +253,6 @@ namespace loops {
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
             tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";
             tl += "\n"
-            tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s\n";
-            tl += "\n";
             tl += s"<reset><gray>Next Chat Game Time": <yellow>%var(ChatGamesTimer)s";
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             

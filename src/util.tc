@@ -22,6 +22,6 @@ namespace util {
         return captures.join(",");
     }
     function timeFormat(value: num): str {
-        str.formatTimestamp(value, "MM:SS")
+        str.formatTimestamp(value, "MM:SS");
     }
 }

@@ -239,36 +239,37 @@ namespace loops {
             tl += s"<reset>\n\n";
 
             tl += s"<reset><yellow><bold>GLOBAL BUFFS\n<reset>";
-            tl += s"<reset><gray>Trinkets: <green>+%var(globalTrinketBuff)%\n";
             if(weatherType == 1) {
-                tl += s"<gray>Weather Machine: <green>+20%\n";
+                tl += s"<gray>Weather Machine: <green>+20% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 2) {
-                tl += s"<gray>Weather Machine: <green>+50%\n";
+                tl += s"<gray>Weather Machine: <green>+50% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 3) {
-                tl += s"<gray>Weather Machine: <green>+90%\n";
+                tl += s"<gray>Weather Machine: <green>+90% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 4) {
-                tl += s"<gray>Weather Machine: <green>+150%\n";
+                tl += s"<gray>Weather Machine: <green>+150% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 5) {
-                tl += s"<gray>Weather Machine: <green>+250%\n";
+                tl += s"<gray>Weather Machine: <green>+250% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 6) {
-                tl += s"<gray>Weather Machine: <green>+350%\n";
+                tl += s"<gray>Weather Machine: <green>+350% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 7) {
-                tl += s"<gray>Weather Machine: <green>+475%\n";
+                tl += s"<gray>Weather Machine: <green>+475% <dark_gray>(Lv 35+)\n";
             }
             if(weatherType == 8) {
-                tl += s"<gray>Weather Machine: <green>+600%\n";
+                tl += s"<gray>Weather Machine: <green>+600% <dark_gray>(Lv 35+)\n";
             }
+            tl += s"<reset><gray>Trinkets: <green>+%var(globalTrinketBuff)% <dark_gray>(Lv 60+)\n";
             line globalDrillMulFmt = util.numberFormat(globalDrillMul);
             //Format chat games timer nicer
             line chatTimerSeconds = global ChatGamesTimer / 20;
             chatTimerSeconds = chatTimerSeconds.round();
             tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
+            tl += s"<dark_gray>(Including +1% for every personal donation)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
             tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";

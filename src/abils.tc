@@ -3,7 +3,7 @@ import throwingaxe;
 
 namespace abils {
     function turret() {
-        if(game.ticksSinceStartup % (80 - (global "%uuid stats"["turret"] * 4)) == 0 && global "%uuid stats"["turret"] > 0 && global "%uuid turretTimer" > 0) {
+        if(game.ticksSinceStartup % (80 - (global "%uuid stats"["turret"] * 2)) == 0 && global "%uuid stats"["turret"] > 0 && global "%uuid turretTimer" > 0) {
             global "%uuid turretTimer" -= 1;
             line diff = global "%uuid blocksToBreak";
             diff.removeValue(global "%uuid brokenLogs");

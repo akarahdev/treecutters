@@ -268,7 +268,7 @@ namespace loops {
             //Format chat games timer nicer
             line chatTimerSeconds = global ChatGamesTimer / 20;
             chatTimerSeconds = utils.timeFormat(chatTimerSeconds.round());
-            kube trinketRestockTimer = utils.timeFormat(saved trinketShopRestockTimer);
+            line trinketRestockTimer = utils.timeFormat(saved trinketShopRestockTimer);
             tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";

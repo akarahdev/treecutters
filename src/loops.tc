@@ -267,11 +267,12 @@ namespace loops {
             line globalDrillMulFmt = util.numberFormat(globalDrillMul);
             //Format chat games timer nicer
             line chatTimerSeconds = global ChatGamesTimer / 20;
-            chatTimerSeconds = chatTimerSeconds.round();
+            chatTimerSeconds = utils.timeFormat(chatTimerSeconds.round());
+            kube trinketRestockTimer = utils.timeFormat(saved trinketShopRestockTimer);
             tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
-            tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketShopRestockTimer)s";
+            tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketRestockTimer)s";
             tl += "\n";
             tl += s"<reset><gray>Next Chat Game Time: <yellow>%var(chatTimerSeconds)s";
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";

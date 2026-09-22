@@ -21,4 +21,7 @@ namespace util {
         line captures = str.getAllRegexMatches(str.setToString(value.round()), regex);
         return captures.join(",");
     }
+    function timeFormat(value: num): str {
+        str.formatTimestamp(value, "MM:SS")
+    }
 }

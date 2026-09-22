@@ -3,33 +3,38 @@ import throwingaxe;
 
 namespace abils {
     function turret() {
-        if(game.ticksSinceStartup % (80 - (global "%uuid stats"["turret"] * 2)) == 0 && global "%uuid stats"["turret"] > 0 && global "%uuid turretTimer" > 0) {
+        if(game.ticksSinceStartup % 20 == 0 && global "%uuid stats"["turret"] > 0 && global "%uuid turretTimer" > 0) {
             global "%uuid turretTimer" -= 1;
             line diff = global "%uuid blocksToBreak";
             diff.removeValue(global "%uuid brokenLogs");
 
-            line rngBlock = var.setToRandom(diff) as loc;
+            for(line x of range(0, global "%uuid stats"["turret"] * 2)) {
+                line rngBlock = var.setToRandom(diff) as loc;
 
-            if(!var.isType(rngBlock, "type" = "Location")) {
-                return;
+                if(!var.isType(rngBlock, "type" = "Location")) {
+                    return;
+                }
+
+                // line blocks = sweeping.getBlockOrders(
+                //     (global "%uuid stats")["tree_type"],
+                //     rngBlock,
+                //     (global "%uuid stats")["sweep"],
+                //     global "%uuid firstStrike",
+                //     (global "%uuid stats")["timber"],
+                // );
+
+                // global "%uuid firstStrike" = 0;
+                // line t2: list[loc] = blocks.flatten();
+                // line l1 = player.midpointLocation;
+                // line l2 = rngBlock;
+                // // start throwingaxe.spawnTemporaryBeam(l1, l2);
+
+                
+
+                sweeping.safeBreak(rngBlock);
+                // sweeping.executeSweepFlattened(saved "%uuid logs", t2);
             }
-
-            line blocks = sweeping.getBlockOrders(
-                (global "%uuid stats")["tree_type"],
-                rngBlock,
-                (global "%uuid stats")["sweep"],
-                global "%uuid firstStrike",
-                (global "%uuid stats")["timber"],
-            );
-
-            global "%uuid firstStrike" = 0;
-            line t2: list[loc] = blocks.flatten();
-            line l1 = player.midpointLocation;
-            line l2 = rngBlock;
-            // start throwingaxe.spawnTemporaryBeam(l1, l2);
-
-            sweeping.safeBreak(rngBlock);
-            sweeping.executeSweepFlattened(saved "%uuid logs", t2);
+            
         }
     }
 }

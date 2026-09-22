@@ -164,11 +164,9 @@ namespace sweeping {
         globalTrinketBuff = globalTrinketBuff.exponent(0.9);
         globalTrinketBuff = globalTrinketBuff.round();
 
-        logMul += (globalTrinketBuff / 100);
-
         declare global globalDrillMul: num = 0;
 
-        globalDrillMul += (num.root(lv100AboveCounter, 2) * num.log(drillLogUnits, 1.1)).ceil();
+        globalDrillMul += (9 * num.log(drillLogUnits, 1.1)).ceil();
 
         declare global "globalLogMul": num = logMul;
 
@@ -197,10 +195,10 @@ namespace sweeping {
             logMul += (saved "%uuid donatedDrillLogUnits" / 100);
         }
 
-        if(global "%uuid stats"["tree_type"] >= 60) {
-            logMul += globalTrinketBuff;
-        }
 
+        if(global "%uuid stats"["tree_type"] >= 60) {
+            logMul += globalTrinketBuff / 100;
+        }
 
 
         if(global "%uuid stats"["tree_type"] >= 35) {
@@ -232,6 +230,7 @@ namespace sweeping {
                 logMul += 6;
             }
         }
+
 
         declare global "%uuid logMul": num = logMul;
         declare global "%uuid logValue" = log_families[num.floor(global "%uuid stats"["tree_type"]/5)+1]["value"];

@@ -192,7 +192,6 @@ namespace sweeping {
 
         if(global "%uuid stats"["tree_type"] >= 100) {
             logMul += ((globalDrillMul) / 100);
-            logMul += (saved "%uuid donatedDrillLogUnits" / 100);
         }
 
 

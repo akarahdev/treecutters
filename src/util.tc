@@ -25,6 +25,7 @@ namespace util {
     // Formats a numbers to a format of mm:ss
     // e.g 60 -> 01:00
     function timeFormat(value: num): str {
-        str.formatTimestamp(value, "mm:ss", format="Custom");
+        line result = str.formatTimestamp(value, "mm:ss", format="Custom");
+        return result;
     }
 }

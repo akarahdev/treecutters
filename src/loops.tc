@@ -266,15 +266,14 @@ namespace loops {
             tl += s"<reset><gray>Trinkets: <green>+%var(globalTrinketBuff)% <dark_gray>(Lv 60+)\n";
             line globalDrillMulFmt = util.numberFormat(globalDrillMul);
             //Format chat games timer nicer
-            line chatTimerSeconds = global ChatGamesTimer / 20;
-            chatTimerSeconds = utils.timeFormat(chatTimerSeconds.round());
+            line chatTimerSeconds = utils.timeFormat((global ChatGamesTimer / 20).round());
             line trinketRestockTimer = utils.timeFormat(saved trinketShopRestockTimer);
             tl += s"<gray>Drill: <green>+%var(globalDrillMulFmt)% <dark_gray>(Lv100+)\n";
             tl += "\n\n";
             tl += s"<reset><blue><bold>TIMERS\n<reset>";
-            tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketRestockTimer)s";
+            tl += s"<reset><gray>Trinket Shop Restock: <yellow>%var(trinketRestockTimer)";
             tl += "\n";
-            tl += s"<reset><gray>Next Chat Game Time: <yellow>%var(chatTimerSeconds)s";
+            tl += s"<reset><gray>Next Chat Game Time: <yellow>%var(chatTimerSeconds)";
             tl = tl + s"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             
             allPlayers.setTabListInfo(tl, field = "Header");

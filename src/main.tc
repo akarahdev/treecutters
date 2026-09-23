@@ -419,6 +419,9 @@ playerevent command {
             if(event.commandArgumentEquals("drill", 2)) {
                 player.teleport(loc(80.5, 3.5, 137.5, 0, 0));
             }
+            if(event.commandArgumentEquals("pets", 2)) {
+                player.teleport(loc(78.5, 4.5, 35.5, 0, 90));
+            }
         }
     }
     if(event.commandArgumentEquals("miku", 1) && player.nameEquals("Kenorbs")) {

@@ -429,45 +429,45 @@ namespace loops {
     }
 
     function createChatTag(level: num): txt {
-        line color = "gray";
+        line color = "dark_gray";
         if(level >= 4) {
             color = "blue";
         }
         if(level >= 9) {
-            color = "green";
+            color = "gray";
         }
         if(level >= 14) {
-            color = "yellow";
+            color = "green";
         }
         if(level >= 19) {
-            color = "gold";
+            color = "yellow";
         }
         if(level >= 24) {
-            color = "red";
+            color = "gold";
         }
         if(level >= 29) {
-            color = "dark_red";
-        }
-        if(level >= 34) {
-            color = "dark_purple";
-        }
-        if(level >= 39) {
-            color = "light_purple";
-        }
-        if(level >= 44) {
             color = "aqua";
         }
+        if(level >= 34) {
+            color = "blue";
+        }
+        if(level >= 39) {
+            color = "dark_aqua";
+        }
+        if(level >= 44) {
+            color = "dark_blue";
+        }
         if(level > 49) {
-            color = "gradient:#777777:#ffffff";
+            color = "light_purple";
         }
         if(level > 54) {
-            color = "gradient:blue:aqua";
+            color = "dark_purple";
         }
         if(level > 59) {
-            color = "gradient:#000099:#0000ff";
+            color = "red";
         }
         if(level > 64) {
-            color = "gradient:#990099:#ff00ff";
+            color = "dark_red";
         }
         if(level > 69) {
             color = "gradient:#660066:#cc00cc";
@@ -476,31 +476,46 @@ namespace loops {
             color = "gradient:#333399:#7777ff";
         }
         if(level > 79) {
-            color = "gradient:#000066:#0000ff";
+            color = "gradient:#7777ff:#aaaaff";
         }
         if(level > 84) {
-            color = "gradient:#440044:#770077";
+            color = "gradient:#aaaaff:#2AD42A";
         }
         if(level > 89) {
-            color = "gradient:#770077:#bb00bb";
+            color = "gradient:#2AD42A:#7FFF7F";
+        }
+        if(level > 94) {
+            color = "gradient:#7FFF7F:#D4FFD4";
         }
         if(level > 99) {
-            color = "gradient:#5555c4:#c5d2e9";
+            color = "gradient:#ef8745:#424340";
         }
         if(level > 104) {
-            color = "gradient:#FF218C:#FFD800";
+            color = "gradient:#FF218C:#FFD800"; 
         }
         if(level > 109) {
-            color = "gradient:#5BCEFA:#F5A9B8";
+            color = "gradient:#5BCEFA:#F5A9B8:white";
         }
         if(level > 114) {
-            color = "gradient:#FFF433:#FFFFFF";
+            color = "gradient:#FFF433:#FFFFFF:#FFF433";
         }
         if(level > 119) {
             color = "gradient:#D60270:#0038A8";
         }
         if(level > 124) {
-            color = "gradient:#A8D47A:#AAABAB";
+            color = "gradient:#07896c:white:#7f4a98";
+        }
+        if(level > 129) {
+            color = "gradient:#d23826:white:#bf457f";
+        }
+        if(level > 134) {
+            color = "gradient:#3ba040:white:dark_gray";
+        }
+        if(level > 139) {
+            color = "gradient:#0ba07d:#d27354:#5782e9";
+        }
+        if(level > 144) {
+            color = "gradient:green:red:blue";
         }
         return txt.parseExpression("<dark_gray>[<%var(color)>%var(level)🪓<dark_gray>]");
     }

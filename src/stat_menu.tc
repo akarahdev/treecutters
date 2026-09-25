@@ -1,6 +1,7 @@
 import statShopIcon;
 import trinket;
 import statsMenu;
+import util;
 
 namespace statsMenu {
 

@@ -25,7 +25,7 @@ namespace util {
     // Formats a numbers to a format specified by the call
     // e.g 60 -> 01:00 (mm:ss)
     // e.g 3600 -> 01:00:00 (hh:mm:ss)
-    function timeFormat(value: num, SimpleTime: string): str {
+    function timeFormat(value: num, SimpleTime: str): str {
         line result = str.formatTimestamp(value, SimpleTime, format="Custom");
         return result;
     }

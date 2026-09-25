@@ -44,7 +44,7 @@ namespace statsMenu {
         line chatWins = saved "%uuid chat_wins";
         line donations = saved "%uuid donatedToWeatherMachine";
         line trueLogs = saved "%uuid true_logs";
-        line playtime = util.timeFormat(saved "%uuid playtime", "HH:mm:ss");
+        line playtime = util.timeFormat((saved "%uuid playtime") / 20, "HH:mm:ss");
         stat1 = stat1.setName(s"<green>Tracking Since release");
         stat1 = stat1.addLore(s"<gray>Current tree level: <white>%var(treeLvl)");
         stat1 = stat1.addLore(s"<gray>Total chat wins: <white>%var(chatWins)");

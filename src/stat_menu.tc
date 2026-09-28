@@ -1,6 +1,7 @@
 import statShopIcon;
 import trinket;
 import statsMenu;
+import util;
 
 namespace statsMenu {
 
@@ -43,13 +44,13 @@ namespace statsMenu {
         line chatWins = saved "%uuid chat_wins";
         line donations = saved "%uuid donatedToWeatherMachine";
         line trueLogs = saved "%uuid true_logs";
-        line playtime = (saved "%uuid playtime" / 20 / 60);
+        line playtime = util.timeFormat((saved "%uuid playtime") / 20, "HH:mm:ss");
         stat1 = stat1.setName(s"<green>Tracking Since release");
         stat1 = stat1.addLore(s"<gray>Current tree level: <white>%var(treeLvl)");
         stat1 = stat1.addLore(s"<gray>Total chat wins: <white>%var(chatWins)");
         stat1 = stat1.addLore(s"<gray>Total donated to the weather machine: <white>%var(donations)");
         stat1 = stat1.addLore(s"<gray>True logs cut: <white>%var(trueLogs)");
-        stat1 = stat1.addLore(s"<gray>Total playtime (in minutes): <white>%var(playtime)");
+        stat1 = stat1.addLore(s"<gray>Total playtime: <white>%var(playtime)");
         inv.setItem(12, stat1);
 
         line stat2 = item("clock");
